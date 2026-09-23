@@ -1,0 +1,61 @@
+# Dependencies
+node_modules/
+client/node_modules/
+server/node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Production build artifacts
+client/build/
+build/
+dist/
+
+# Environment files and credentials
+.env
+.env*
+*.env
+client/.env
+client/.env*
+client/.env.txt
+server/.env
+server/.env*
+*.pem
+*.key
+*.cert
+*.crt
+*.pfx
+*.pkcs12
+
+# Runtime dynamic data & user uploads
+server/uploads/receipts/*
+!server/uploads/receipts/.gitkeep
+server/data/applications.json
+server/data/users.json
+server/data/contactMessages.json
+server/data/articles.json
+server/data/votes.json
+
+# Temporary archives, logs, and scripts
+veritas.tar.gz
+*.zip
+*.tar
+*.gz
+*.rar
+*.log
+deploy_package/
+scratch/
+test_*.py
+find_*.py
+testSmtp.js
+testSendMail.js
+testContactApi.js
+crop_favicon.ps1
+
+# OS / Editor files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*.swo

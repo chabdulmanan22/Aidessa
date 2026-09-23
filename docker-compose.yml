@@ -1,0 +1,59 @@
+services:
+  veritas-mongodb:
+    image: mongo:6.0
+    container_name: veritas-mongodb
+    restart: always
+    environment:
+      MONGO_INITDB_DATABASE: doa-voting
+    volumes:
+      - veritas_mongo_data:/data/db
+    networks:
+      - veritas-net
+
+  veritas-backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    container_name: veritas-backend
+    restart: always
+    ports:
+      - "8000:8000"
+    environment:
+      PORT: 8000
+      MONGODB_URI: mongodb://veritas-mongodb:27017/doa-voting
+      NODE_ENV: production
+      JWT_SECRET: ${JWT_SECRET:-your_jwt_secret_key}
+      ADMIN_USERNAME: ${ADMIN_USERNAME:-admin}
+      ADMIN_EMAIL: ${ADMIN_EMAIL:-support@veritasaid.com}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:-your_admin_password}
+      EMAIL_HOST: ${EMAIL_HOST:-smtp.hostinger.com}
+      EMAIL_PORT: ${EMAIL_PORT:-465}
+      EMAIL_SECURE: ${EMAIL_SECURE:-true}
+      EMAIL_USERNAME: ${EMAIL_USERNAME:-support@veritasaid.com}
+      EMAIL_PASSWORD: ${EMAIL_PASSWORD:-your_smtp_password}
+      EMAIL_FROM: ${EMAIL_FROM:-support@veritasaid.com}
+      CLIENT_URL: ${CLIENT_URL:-https://veritasaid.com}
+    depends_on:
+      - veritas-mongodb
+    networks:
+      - veritas-net
+
+  veritas-frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    container_name: veritas-frontend
+    restart: always
+    ports:
+      - "3080:80"
+    depends_on:
+      - veritas-backend
+    networks:
+      - veritas-net
+
+networks:
+  veritas-net:
+    driver: bridge
+
+volumes:
+  veritas_mongo_data:
