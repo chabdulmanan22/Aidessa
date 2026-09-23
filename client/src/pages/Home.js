@@ -119,59 +119,60 @@ const Home = () => {
   return (
     <div className="min-h-screen">
       {/* Hero Pin Wrapper for Stacking Card Reveal */}
-      <div ref={heroWrapperRef} className="relative w-full h-[120vh] sm:h-[130vh] -mt-16">
+      <div ref={heroWrapperRef} className="relative w-full h-[115vh] sm:h-[130vh] -mt-16">
         <div className="sticky top-0 h-screen min-h-[100dvh] w-full overflow-hidden z-10">
-          <section className="relative w-full h-full flex flex-col justify-center overflow-hidden bg-[#F8E7C9] pt-20 pb-10 sm:pt-24 sm:pb-16 md:pt-28 md:pb-20">
+          <section className="relative w-full h-full flex flex-col justify-start sm:justify-center overflow-hidden bg-[#F8E7C9] pt-20 sm:pt-24 pb-8 sm:pb-16 md:pt-28 md:pb-20">
             {/* Animated Uneven Mosaic Grid Boxes Background */}
             <HeroGridBoxesAnimation />
 
             {/* Hero Main Content */}
-            <div className="relative z-10 w-full px-5 xs:px-6 sm:px-10 md:px-14 lg:px-16 max-w-7xl mx-auto flex-1 flex flex-col justify-center">
+            <div className="relative z-10 w-full px-5 xs:px-6 sm:px-10 md:px-14 lg:px-16 max-w-7xl mx-auto flex-1 flex flex-col justify-start sm:justify-center pt-5 xs:pt-7 sm:pt-0">
               <motion.div
                 initial={{ opacity: 0, y: 35 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
-                className="max-w-xl sm:max-w-2xl space-y-4 sm:space-y-6 flex flex-col items-center sm:items-start text-center sm:text-left mx-auto sm:mx-0"
+                className="max-w-xl sm:max-w-2xl space-y-4 xs:space-y-5 sm:space-y-6 flex flex-col items-center sm:items-start text-center sm:text-left mx-auto sm:mx-0"
               >
-                {/* Eyebrow Tag */}
+                {/* Eyebrow Tag: Polished modern pill badge on mobile */}
                 <div className="flex items-center justify-center sm:justify-start w-full">
-                  <div className="inline-flex items-center gap-2 text-center sm:text-left max-w-full">
-                    <span className="w-2 h-2 rounded-full bg-[#064E3B] shrink-0" />
-                    <span className="text-[9px] xs:text-[10px] sm:text-xs font-black tracking-[0.08em] xs:tracking-[0.14em] sm:tracking-[0.25em] text-[#064E3B] uppercase whitespace-nowrap sm:whitespace-normal">
+                  <div className="inline-flex items-center gap-2 px-3 py-1 sm:px-0 sm:py-0 rounded-full bg-[#064E3B]/[0.08] sm:bg-transparent border border-[#064E3B]/15 sm:border-0 shadow-xs sm:shadow-none text-center sm:text-left max-w-full">
+                    <span className="w-2 h-2 rounded-full bg-emerald-600 sm:bg-[#064E3B] shrink-0 animate-pulse sm:animate-none" />
+                    <span className="text-[10px] xs:text-[11px] sm:text-xs font-black tracking-[0.12em] xs:tracking-[0.16em] sm:tracking-[0.25em] text-[#064E3B] uppercase whitespace-nowrap sm:whitespace-normal">
                       TRUST INFRASTRUCTURE • ON-CHAIN FRAUD RECOVERY
                     </span>
                   </div>
                 </div>
 
-                {/* Bold Editorial Main Headline (matching reference screenshot font) */}
-                <h1 className="font-editorial text-3xl xs:text-4xl sm:text-6xl md:text-7xl lg:text-[4.85rem] font-normal text-[#064E3B] tracking-[-0.02em] leading-[1.08] sm:leading-[1.04] text-center sm:text-left">
+                {/* Bold Editorial Main Headline - Thick, commanding, high-impact on mobile */}
+                <h1 className="font-editorial text-[2.35rem] xs:text-[2.75rem] sm:text-6xl md:text-7xl lg:text-[4.85rem] font-bold sm:font-normal text-[#064E3B] tracking-[-0.03em] leading-[1.08] sm:leading-[1.04] text-center sm:text-left">
                   Driven by Truth. <br />
                   <span className="text-[#043C2D]">Returning what’s yours</span>
                 </h1>
 
-                {/* Description Copy (matching reference screenshot clean typography) */}
-                <p className="font-sans text-sm sm:text-base md:text-lg text-[#064E3B]/85 leading-[1.55] sm:leading-[1.6] font-normal max-w-xl text-center sm:text-left mx-auto sm:mx-0">
+                {/* Description Copy - Rich contrast and readability */}
+                <p className="font-sans text-[14.5px] xs:text-[15.5px] sm:text-base md:text-lg text-[#064E3B]/90 font-medium sm:font-normal leading-[1.6] max-w-lg mx-auto sm:mx-0 text-center sm:text-left">
                   Aidessa helps government agencies securely return cryptocurrency recovered from fraud, financial crimes, and illegal business practices to verified victims through on-chain Proof-of-Loss tokens (RFND).
                 </p>
 
-                {/* Primary Action Button (Rectangular rounded-md button with arrow matching screenshot) */}
-                <div className="pt-1 sm:pt-2 flex flex-wrap items-center justify-center sm:justify-start gap-4">
+                {/* Primary Action Button - Bold & Magnetic */}
+                <div className="pt-1.5 sm:pt-2 flex flex-wrap items-center justify-center sm:justify-start gap-4">
                   <button
                     type="button"
                     onClick={() => {
                       const ref = localStorage.getItem('landingReferralCode');
                       navigate(ref ? `/join-notice?ref=${encodeURIComponent(ref)}` : '/join-notice');
                     }}
-                    className="inline-flex items-center gap-2.5 sm:gap-3 px-6 py-3 sm:px-7 sm:py-3.5 rounded-[6px] bg-[#064E3B] text-[#F8E7C9] text-sm sm:text-base font-medium hover:bg-[#043C2D] border border-[#043C2D] transition-all duration-200 group shadow-sm cursor-pointer"
+                    className="inline-flex items-center gap-3 px-8 py-3.5 rounded-[8px] bg-[#064E3B] text-[#F8E7C9] text-[15px] sm:text-base font-semibold hover:bg-[#043C2D] border border-[#043C2D] shadow-md shadow-[#064E3B]/20 active:scale-95 transition-all duration-200 group cursor-pointer"
                   >
                     <span>Request a refund</span>
-                    <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" strokeWidth={1.8} />
+                    <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" strokeWidth={2} />
                   </button>
                 </div>
 
                 {/* Trust Badge / Sub-stat */}
-                <div className="inline-flex items-center justify-center sm:justify-start gap-2 text-[11px] xs:text-xs sm:text-sm font-semibold text-[#064E3B]/80 pt-0.5 sm:pt-1 leading-snug text-center sm:text-left">
-                  <span>Over 10,000+ verified fraud victims assisted through private liquidity pools</span>
+                <div className="inline-flex items-center justify-center sm:justify-start gap-2 text-xs sm:text-sm font-medium text-[#064E3B]/90 pt-1 leading-snug text-center sm:text-left">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 shrink-0" />
+                  <span>Over <strong className="font-bold text-[#064E3B]">10,000+</strong> verified fraud victims assisted</span>
                 </div>
               </motion.div>
             </div>
