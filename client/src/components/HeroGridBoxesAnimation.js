@@ -12,14 +12,20 @@ const HeroGridBoxesAnimation = () => {
     let height = 0;
     let mouse = { x: -1000, y: -1000 };
 
-    // Palette: Variations of locked #064E3B on #F8E7C9 base
-    const SHADES = [
-      { r: 6, g: 78, b: 59, baseAlpha: 0.92, label: 'deepSolid' },
-      { r: 8, g: 88, b: 67, baseAlpha: 0.78, label: 'deepMid' },
-      { r: 12, g: 97, b: 72, baseAlpha: 0.62, label: 'forest' },
-      { r: 46, g: 124, b: 100, baseAlpha: 0.44, label: 'sage' },
-      { r: 95, g: 166, b: 143, baseAlpha: 0.28, label: 'softMint' },
-      { r: 140, g: 194, b: 175, baseAlpha: 0.16, label: 'subtleTint' },
+    // Dual Palette: Mix of deep dark greens and vibrant light greens on #F8E7C9 base
+    const DARK_SHADES = [
+      { r: 4, g: 60, b: 45, baseAlpha: 0.90, label: 'deepSolid' },
+      { r: 6, g: 78, b: 59, baseAlpha: 0.82, label: 'deepForest' },
+      { r: 10, g: 95, b: 71, baseAlpha: 0.74, label: 'richEmerald' },
+      { r: 16, g: 110, b: 84, baseAlpha: 0.65, label: 'pineGreen' },
+    ];
+
+    const LIGHT_SHADES = [
+      { r: 34, g: 168, b: 124, baseAlpha: 0.62, label: 'vibrantMint' },
+      { r: 52, g: 194, b: 146, baseAlpha: 0.52, label: 'brightMint' },
+      { r: 92, g: 186, b: 152, baseAlpha: 0.44, label: 'softSage' },
+      { r: 130, g: 210, b: 180, baseAlpha: 0.36, label: 'lightMint' },
+      { r: 160, g: 222, b: 198, baseAlpha: 0.28, label: 'paleMint' },
     ];
 
     let cells = [];
@@ -32,37 +38,37 @@ const HeroGridBoxesAnimation = () => {
       cells = [];
       const isMobile = width < 640;
       const isTablet = width >= 640 && width < 1024;
-      // Smaller boxes on mobile so the full geometric mosaic fits with rich detail
-      cellW = isMobile ? 24 : isTablet ? 34 : 44;
-      cellH = isMobile ? 20 : isTablet ? 28 : 36;
+
+      // Clean modular cell dimensions: smaller on mobile for rich mosaic detail
+      cellW = isMobile ? 22 : isTablet ? 32 : 44;
+      cellH = isMobile ? 18 : isTablet ? 26 : 36;
       cols = Math.ceil(width / cellW) + 1;
       rows = Math.ceil(height / cellH) + 1;
 
-      // Header clear rows: protect logo and hamburger menu from background tiles
+      // Header clear rows: protect logo and top menu
       const headerClearRows = isMobile ? 3 : 2;
 
-      // Seeded-like organic uneven distribution
+      // Vertical text zone on mobile: starts around row 5 and ends around row 19
+      const textRowStart = isMobile ? 5 : 4;
+      const textRowEnd = isMobile ? 19 : 14;
+
       for (let r = 0; r < rows; r++) {
-        // Keep top rows in clean base color (#F8E7C9) so header logo and menu stay prominent
         if (r < headerClearRows) continue;
 
+        const isTextRowBand = r >= textRowStart && r <= textRowEnd;
+        const isBottomOpenArea = r > textRowEnd;
+
         // Left-side stepped protrusion:
-        // Organic undulating stepped wave on mobile matching desktop's uneven mosaic pattern
         const leftWave = isMobile
-          ? Math.sin(r * 0.7 + 1.4) * 1.1 + 0.7
-          : Math.sin(r * 0.8 + 1.2) * 1.8 + 1.8;
-        const leftMaxCol = isMobile
-          ? Math.floor(leftWave)
-          : 1 + Math.floor(leftWave);
+          ? (isBottomOpenArea ? Math.sin(r * 0.5 + 1.2) * 2.2 + 2.2 : Math.sin(r * 0.7 + 1.4) * 1.1 + 0.9)
+          : Math.sin(r * 0.8 + 1.2) * 2.0 + 1.8;
+        const leftMaxCol = Math.floor(leftWave);
 
         // Right-side stepped protrusion:
-        // Organic undulating stepped wave on right edge, matching desktop's uneven mosaic pattern
         const rightWave = isMobile
-          ? Math.cos(r * 0.65 + 2.3) * 1.1 + 0.7
-          : Math.cos(r * 0.7 + 2.1) * 2.2 + 2.0;
-        const rightSteps = isMobile
-          ? Math.floor(rightWave)
-          : 1 + Math.floor(rightWave);
+          ? (isBottomOpenArea ? Math.cos(r * 0.55 + 2.0) * 2.2 + 2.2 : Math.cos(r * 0.65 + 2.3) * 1.1 + 0.9)
+          : Math.cos(r * 0.7 + 2.1) * 2.4 + 2.0;
+        const rightSteps = Math.floor(rightWave);
         const rightMinCol = rightSteps >= 0 ? cols - 1 - rightSteps : cols;
 
         for (let c = 0; c < cols; c++) {
@@ -70,41 +76,69 @@ const HeroGridBoxesAnimation = () => {
           const isRightEdge = rightMinCol < cols && c >= rightMinCol;
           const isEdge = isLeftEdge || isRightEdge;
 
-          // In center, place scattered floating mosaic boxes with gentle probability
-          // Center is less dense so text stays super clear
-          const centerNoise = Math.sin(c * 0.9 + r * 1.3) * Math.cos(r * 0.6 - c * 0.4);
-          const isCenterTile = !isEdge && centerNoise > (isMobile ? 0.48 : 0.42) && Math.random() > 0.35;
+          const isCenterCol = c >= 2 && c <= cols - 3;
+          const isInsideTextZone = isTextRowBand && isCenterCol;
 
-          if (isEdge || isCenterTile) {
-            let shadeIndex;
-            let opacityFactor = 1.0;
+          let shouldSpawn = false;
+          let isDark = false;
+          let shade;
+          let opacityMultiplier = 1.0;
 
-            if (isEdge) {
-              // Closer to screen edge = deeper, more solid; further inside = lighter
-              const distFromBorder = isLeftEdge ? c : (cols - 1 - c);
-              if (distFromBorder === 0) {
-                shadeIndex = Math.random() > 0.35 ? 0 : 1; // deep solid
-              } else if (distFromBorder === 1) {
-                shadeIndex = Math.random() > 0.4 ? 1 : 2;
-              } else if (distFromBorder === 2) {
-                shadeIndex = Math.random() > 0.5 ? 2 : 3;
-              } else {
-                shadeIndex = Math.random() > 0.4 ? 3 : 4;
-              }
+          if (isEdge) {
+            // Edge mosaic: stepped column clusters
+            shouldSpawn = true;
+            const distFromEdge = isLeftEdge ? c : (cols - 1 - c);
+            if (distFromEdge <= 1) {
+              isDark = Math.random() > 0.28;
             } else {
-              // Center floating tiles: very subtle, elegant low opacity
-              shadeIndex = Math.random() > 0.5 ? 4 : 5;
-              opacityFactor = isMobile ? 0.5 : 0.65;
+              isDark = Math.random() > 0.50;
             }
+            shade = isDark
+              ? DARK_SHADES[Math.floor(Math.random() * DARK_SHADES.length)]
+              : LIGHT_SHADES[Math.floor(Math.random() * LIGHT_SHADES.length)];
+          } else if (isBottomOpenArea) {
+            // BOTTOM NON-TEXT AREA:
+            // Heavily populated with rich clusters of mixed light and dark green boxes
+            const clusterNoise = Math.sin(c * 0.75 + r * 0.9) * Math.cos(r * 0.45 - c * 0.5);
+            if (clusterNoise > -0.28 || Math.random() < (isMobile ? 0.52 : 0.36)) {
+              shouldSpawn = true;
+              isDark = Math.random() > 0.48; // balanced mix of dark green and light green
+              if (isDark) {
+                shade = DARK_SHADES[Math.floor(Math.random() * DARK_SHADES.length)];
+                opacityMultiplier = 0.88;
+              } else {
+                shade = LIGHT_SHADES[Math.floor(Math.random() * LIGHT_SHADES.length)];
+                opacityMultiplier = 0.92;
+              }
+            }
+          } else if (isInsideTextZone) {
+            // INSIDE TEXT ZONE:
+            // Keep subtle, airy, and strictly soft light mint so text readability remains 100%
+            const centerNoise = Math.sin(c * 0.95 + r * 1.3) * Math.cos(r * 0.6 - c * 0.4);
+            if (centerNoise > 0.58 && Math.random() > 0.55) {
+              shouldSpawn = true;
+              isDark = false;
+              shade = LIGHT_SHADES[Math.floor(Math.random() * LIGHT_SHADES.length)];
+              opacityMultiplier = 0.30;
+            }
+          } else {
+            // Upper sides outside text
+            if (Math.random() < 0.40) {
+              shouldSpawn = true;
+              isDark = Math.random() > 0.5;
+              shade = isDark
+                ? DARK_SHADES[Math.floor(Math.random() * DARK_SHADES.length)]
+                : LIGHT_SHADES[Math.floor(Math.random() * LIGHT_SHADES.length)];
+              opacityMultiplier = 0.65;
+            }
+          }
 
-            const shade = SHADES[shadeIndex];
-            
-            // Staggered entrance delay based on distance and row
-            const entranceDelay = isLeftEdge 
-              ? (c * 0.12 + (r % 4) * 0.08)
-              : isRightEdge 
-                ? ((cols - c) * 0.12 + (r % 4) * 0.08)
-                : (0.4 + (c / cols) * 0.8 + (r % 3) * 0.1);
+          if (shouldSpawn && shade) {
+            const entranceDelay = isLeftEdge
+              ? (c * 0.08 + (r % 4) * 0.05)
+              : isRightEdge
+                ? ((cols - c) * 0.08 + (r % 4) * 0.05)
+                : (0.2 + (r / rows) * 0.6 + (c / cols) * 0.4);
 
             cells.push({
               col: c,
@@ -116,12 +150,18 @@ const HeroGridBoxesAnimation = () => {
               r: shade.r,
               g: shade.g,
               b: shade.b,
-              baseAlpha: shade.baseAlpha * opacityFactor,
-              pulseSpeed: 1.2 + Math.random() * 1.4,
-              phase: c * 0.35 + r * 0.45 + Math.random() * Math.PI,
+              baseAlpha: shade.baseAlpha * opacityMultiplier,
+              // Continuous active animation parameters
+              pulseSpeed: 1.4 + Math.random() * 2.2,
+              pulseDepth: 0.28 + Math.random() * 0.32,
+              phase: c * 0.4 + r * 0.6 + Math.random() * Math.PI,
+              shimmerSpeed: 0.9 + Math.random() * 1.6,
+              shimmerPhase: Math.random() * Math.PI * 2,
+              scalePulseSpeed: 1.2 + Math.random() * 1.8,
               entranceDelay,
-              growDuration: 0.85 + Math.random() * 0.4,
-              isEdge,
+              growDuration: 0.7 + Math.random() * 0.4,
+              isDark,
+              isBottom: isBottomOpenArea,
             });
           }
         }
@@ -178,12 +218,12 @@ const HeroGridBoxesAnimation = () => {
     const draw = (timestamp) => {
       if (!startTime) startTime = timestamp;
       const elapsed = (timestamp - startTime) / 1000;
-      time += 0.014;
+      time += 0.024; // Smooth continuous clock
 
       ctx.clearRect(0, 0, width, height);
 
-      // Subtle background grid guides in #064E3B at 3% opacity
-      ctx.strokeStyle = 'rgba(6, 78, 59, 0.04)';
+      // Subtle background grid guides in #064E3B at 3.5% opacity
+      ctx.strokeStyle = 'rgba(6, 78, 59, 0.035)';
       ctx.lineWidth = 1;
       for (let c = 0; c <= cols; c++) {
         ctx.beginPath();
@@ -198,20 +238,22 @@ const HeroGridBoxesAnimation = () => {
         ctx.stroke();
       }
 
-      // Draw each animated uneven mosaic cell
+      // Draw each animated mosaic cell
       cells.forEach((cell) => {
-        // Staggered entrance calculation
         if (elapsed < cell.entranceDelay) return;
-        
+
         const growElapsed = elapsed - cell.entranceDelay;
         const progress = Math.min(1.0, growElapsed / cell.growDuration);
-        // Cubic ease out
         const easeOut = 1.0 - Math.pow(1.0 - progress, 3);
 
-        // Ambient breathing pulse: soft oscillation
-        const pulse = 0.82 + 0.18 * Math.sin(time * cell.pulseSpeed + cell.phase);
+        // Continuous active breathing animation:
+        // Visible oscillation between (1 - pulseDepth) and 1.0
+        const pulse = (1 - cell.pulseDepth) + cell.pulseDepth * (0.5 + 0.5 * Math.sin(time * cell.pulseSpeed + cell.phase));
 
-        // Mouse hover interaction: cells near cursor gently illuminate
+        // Periodic shimmer / highlight wave that sweeps through tiles
+        const shimmer = Math.pow(Math.max(0, Math.sin(time * cell.shimmerSpeed + cell.shimmerPhase)), 3) * 0.32;
+
+        // Mouse or touch hover glow
         const centerX = cell.x + cell.w / 2;
         const centerY = cell.y + cell.h / 2;
         const dx = mouse.x - centerX;
@@ -219,21 +261,20 @@ const HeroGridBoxesAnimation = () => {
         const dist = Math.sqrt(dx * dx + dy * dy);
         let hoverGlow = 0;
         if (dist < 140) {
-          hoverGlow = (1 - dist / 140) * 0.35;
+          hoverGlow = (1 - dist / 140) * 0.4;
         }
 
         // Final calculated opacity
-        const alpha = Math.min(1.0, (cell.baseAlpha * pulse * easeOut) + hoverGlow);
+        const alpha = Math.min(1.0, (cell.baseAlpha * pulse * easeOut) + shimmer + hoverGlow);
 
-        // Subtle micro-scale on entrance for dynamic stepped pop-in
-        const currentW = cell.w * (0.85 + 0.15 * easeOut);
-        const currentH = cell.h * (0.85 + 0.15 * easeOut);
+        // Subtle micro-scale tile breathing (±3%) so the grid feels constantly alive
+        const breathingFactor = 1.0 + 0.03 * Math.sin(time * cell.scalePulseSpeed + cell.phase);
+        const currentW = Math.max(2, cell.w * (0.85 + 0.15 * easeOut) * breathingFactor);
+        const currentH = Math.max(2, cell.h * (0.85 + 0.15 * easeOut) * breathingFactor);
         const offsetX = (cell.w - currentW) / 2;
         const offsetY = (cell.h - currentH) / 2;
 
         ctx.fillStyle = `rgba(${cell.r}, ${cell.g}, ${cell.b}, ${alpha})`;
-        
-        // Crisp, pure geometric matte box
         ctx.fillRect(cell.x + offsetX, cell.y + offsetY, currentW, currentH);
       });
 

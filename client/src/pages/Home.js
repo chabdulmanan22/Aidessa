@@ -133,10 +133,10 @@ const Home = () => {
                 transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
                 className="max-w-xl sm:max-w-2xl space-y-4 xs:space-y-5 sm:space-y-6 flex flex-col items-center sm:items-start text-center sm:text-left mx-auto sm:mx-0"
               >
-                {/* Eyebrow Tag: Polished modern pill badge on mobile */}
+                {/* Eyebrow Tag: Clean tag without pill container */}
                 <div className="flex items-center justify-center sm:justify-start w-full">
-                  <div className="inline-flex items-center gap-2 px-3 py-1 sm:px-0 sm:py-0 rounded-full bg-[#064E3B]/[0.08] sm:bg-transparent border border-[#064E3B]/15 sm:border-0 shadow-xs sm:shadow-none text-center sm:text-left max-w-full">
-                    <span className="w-2 h-2 rounded-full bg-emerald-600 sm:bg-[#064E3B] shrink-0 animate-pulse sm:animate-none" />
+                  <div className="inline-flex items-center gap-2 text-center sm:text-left max-w-full">
+                    <span className="w-2 h-2 rounded-full bg-[#064E3B] shrink-0" />
                     <span className="text-[10px] xs:text-[11px] sm:text-xs font-black tracking-[0.12em] xs:tracking-[0.16em] sm:tracking-[0.25em] text-[#064E3B] uppercase whitespace-nowrap sm:whitespace-normal">
                       TRUST INFRASTRUCTURE • ON-CHAIN FRAUD RECOVERY
                     </span>
