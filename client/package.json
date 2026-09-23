@@ -24,7 +24,7 @@
   },
   "scripts": {
     "start": "cross-env HOST=localhost PORT=3001 NODE_OPTIONS=--max-old-space-size=4096 DANGEROUSLY_DISABLE_HOST_CHECK=true react-scripts start",
-    "build": "react-scripts build",
+    "build": "cross-env CI=false GENERATE_SOURCEMAP=false react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
