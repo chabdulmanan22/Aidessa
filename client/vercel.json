@@ -8,8 +8,31 @@
       "dest": "/static/$1"
     },
     {
+      "src": "/images/(.*)",
+      "headers": {
+        "cache-control": "s-maxage=86400"
+      },
+      "dest": "/images/$1"
+    },
+    {
+      "src": "/sounds/(.*)",
+      "dest": "/sounds/$1"
+    },
+    {
+      "src": "/documents/(.*)",
+      "dest": "/documents/$1"
+    },
+    {
       "src": "/favicon.ico",
       "dest": "/favicon.ico"
+    },
+    {
+      "src": "/favicon.png",
+      "dest": "/favicon.png"
+    },
+    {
+      "src": "/logo.png",
+      "dest": "/logo.png"
     },
     {
       "src": "/asset-manifest.json",
@@ -18,6 +41,9 @@
     {
       "src": "/manifest.json",
       "dest": "/manifest.json"
+    },
+    {
+      "handle": "filesystem"
     },
     {
       "src": "/(.*)",
