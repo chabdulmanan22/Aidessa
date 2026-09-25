@@ -580,14 +580,14 @@ const AdminDashboard = () => {
           >
             <div className="flex flex-col h-full">
               {/* Sidebar Header */}
-              <div className="p-6 border-b border-gray-200">
-                <div className="flex items-center gap-3">
-                  <img src="/images/logo.png" alt="Aidessa Logo" className="h-10 w-auto object-contain" />
-                  <div>
-                    <h2 className="text-lg font-bold text-gray-900">Aidessa Admin</h2>
-                    <p className="text-xs text-gray-500">Control Panel</p>
-                  </div>
-
+              <div className="p-5 border-b border-gray-200">
+                <div className="flex items-center">
+                  <img
+                    src="/images/logo.png"
+                    alt="Aidessa Logo"
+                    className="h-9 w-auto max-w-[170px] object-contain cursor-pointer"
+                    onClick={() => { setActiveSection('dashboard'); navigate('/admin/dashboard'); }}
+                  />
                 </div>
               </div>
 
