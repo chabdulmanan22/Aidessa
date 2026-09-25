@@ -170,9 +170,8 @@ const Home = () => {
                 </div>
 
                 {/* Trust Badge / Sub-stat */}
-                <div className="inline-flex items-center justify-center sm:justify-start gap-2 text-xs sm:text-sm font-medium text-[#064E3B]/90 pt-1 leading-snug text-center sm:text-left">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 shrink-0" />
-                  <span>Over <strong className="font-bold text-[#064E3B]">10,000+</strong> verified fraud victims assisted</span>
+                <div className="text-xs sm:text-sm font-medium text-[#064E3B]/85 pt-1 leading-snug text-center sm:text-left">
+                  <span>A trusted nonprofit providing support and advocacy for victims of digital fraud.</span>
                 </div>
               </motion.div>
             </div>

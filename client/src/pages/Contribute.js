@@ -15,6 +15,8 @@ import { QRCodeSVG } from 'qrcode.react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import toast from 'react-hot-toast';
+import { createPortal } from 'react-dom';
+import HeroGridBoxesAnimation from '../components/HeroGridBoxesAnimation';
 
 const Contribute = () => {
   const navigate = useNavigate();
@@ -332,356 +334,425 @@ const Contribute = () => {
   };
 
   return (
-    <div className="min-h-screen hero-gradient p-6">
-      <div className="max-w-4xl mx-auto">
+    <div className="relative w-full min-h-[calc(100vh-4rem)] bg-[#F8E7C9] text-[#064E3B] py-8 sm:py-12 overflow-hidden">
+      {/* Background Animated Grid Texture */}
+      <HeroGridBoxesAnimation />
+
+      <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6 sm:space-y-8">
         {/* Header */}
         <motion.div
-          initial={{ opacity: 0, y: -20 }}
+          initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="flex items-center mb-6 sm:mb-8"
+          transition={{ duration: 1.5, ease: 'easeOut' }}
+          className="flex items-center justify-between gap-4"
         >
+          <div>
+            <h1 className="font-editorial text-3xl sm:text-4xl md:text-5xl font-normal text-[#064E3B] tracking-[-0.02em]">
+              Contribute
+            </h1>
+            <p className="text-[#064E3B]/70 text-sm sm:text-base font-sans mt-1">
+              Contribute to the DAO's progress and earn restitution points
+            </p>
+          </div>
           <button
             onClick={handleBackToDashboard}
-            className="mr-3 sm:mr-4 p-2 bg-white/10 hover:bg-white/20 rounded-lg transition-colors"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-[8px] bg-transparent hover:bg-[#064E3B]/[0.06] border border-[#064E3B]/20 text-[#064E3B] text-xs sm:text-sm font-semibold transition-all cursor-pointer shrink-0"
           >
-            <ArrowLeft className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+            <ArrowLeft className="w-4 h-4" />
+            <span>Dashboard</span>
           </button>
-          <div>
-            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-2">Contribute</h1>
-            <p className="text-sm sm:text-base text-gray-300">Contribute to the DAO's progress and earn points</p>
-          </div>
         </motion.div>
 
-        {/* Voluntary Notification Banner - ALWAYS shown */}
+        {/* Voluntary Notification Banner */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          className="bg-amber-500/10 backdrop-blur-md border border-amber-500/30 rounded-xl p-4 mb-6 flex items-start gap-4"
+          initial={{ opacity: 0, y: 5 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1.5, ease: 'easeOut' }}
+          className="rounded-[8px] sm:rounded-[10px] bg-[#FFFDF9] border border-[#064E3B]/15 p-4 sm:p-5 flex items-start gap-3.5 shadow-[0_8px_30px_rgba(6,78,59,0.04)]"
         >
-          <div className="bg-amber-500 rounded-full p-1 mt-0.5 flex-shrink-0">
-            <CheckCircle className="w-4 h-4 text-white" />
+          <div className="p-2 rounded-[6px] bg-[#064E3B]/[0.08] text-[#064E3B] shrink-0 mt-0.5">
+            <CheckCircle className="w-4 h-4" />
           </div>
-          <p className="text-amber-200 text-sm sm:text-base font-medium">
-            Contributions are voluntary and optional. Your support is appreciated but not required.
-          </p>
+          <div>
+            <span className="text-xs font-bold uppercase tracking-wider text-[#064E3B] block font-sans">
+              Voluntary Notice
+            </span>
+            <p className="text-xs sm:text-sm text-[#064E3B]/80 font-sans mt-0.5 leading-relaxed">
+              Contributions are voluntary and optional. Your support is appreciated but not required.
+            </p>
+          </div>
         </motion.div>
-
-
 
         {/* Timer Section - Only show if a round is actually active/running */}
         {timer?.endTime && (
           <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="glass-effect rounded-xl sm:rounded-2xl p-4 sm:p-6 mb-6 sm:mb-8 text-center"
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1.5, ease: 'easeOut' }}
+            className="rounded-[8px] sm:rounded-[10px] bg-[#FFFDF9] border border-[#064E3B]/15 p-6 sm:p-8 text-center text-[#064E3B] shadow-[0_8px_30px_rgba(6,78,59,0.06)] space-y-2"
           >
-            <div className="flex items-center justify-center mb-4">
-              <Clock className="w-6 h-6 sm:w-8 sm:h-8 text-green-400 mr-2 sm:mr-3" />
-              <h2 className="text-lg sm:text-xl lg:text-2xl font-bold text-white">Contribution Round</h2>
+            <div className="flex items-center justify-center gap-2 mb-1">
+              <Clock className="w-5 h-5 text-[#064E3B]" />
+              <h3 className="font-editorial text-2xl sm:text-3xl font-normal text-[#064E3B]">
+                Contribution Round
+              </h3>
             </div>
-            <div className="text-xl sm:text-2xl lg:text-4xl font-bold text-white mb-2">
+            <div className="font-editorial text-3xl sm:text-4xl md:text-5xl font-normal text-[#064E3B] tracking-wider">
               {countdown}
             </div>
-            <p className="text-sm sm:text-base text-gray-300">Until the current contribution round ends</p>
+            <p className="text-xs sm:text-sm text-[#064E3B]/60 font-sans">
+              Until the current contribution round ends
+            </p>
           </motion.div>
         )}
-
-
 
         {/* Contribution Tiers & Points — visible only when contributions are on */}
         {canContribute && (
           <motion.div
-            initial={{ opacity: 0, y: 10 }}
+            initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-white/10 backdrop-blur-md rounded-2xl p-4 sm:p-6 border border-white/20 mb-6 sm:mb-8"
+            transition={{ duration: 1.5, ease: 'easeOut' }}
+            className="rounded-[8px] sm:rounded-[10px] bg-[#FFFDF9] border border-[#064E3B]/15 p-6 sm:p-8 text-[#064E3B] shadow-[0_8px_30px_rgba(6,78,59,0.06)]"
           >
-            <div className="grid grid-cols-1 gap-4">
+            <div className="pb-4 border-b border-[#064E3B]/10 flex items-center justify-between">
               <div>
-                <h3 className="text-lg font-bold text-white mb-3">Contribution Tiers &amp; Points</h3>
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm">
-                    <span className="text-gray-300">$50–$99</span>
-                    <span className="text-green-400 font-semibold">15 points</span>
-                  </div>
-                  <div className="flex items-center justify-between bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm">
-                    <span className="text-gray-300">$100–$299</span>
-                    <span className="text-green-400 font-semibold">30 points</span>
-                  </div>
-                  <div className="flex items-center justify-between bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm">
-                    <span className="text-gray-300">$300–$499</span>
-                    <span className="text-green-400 font-semibold">100 points</span>
-                  </div>
-                  <div className="flex items-center justify-between bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm">
-                    <span className="text-gray-300">$500–$999</span>
-                    <span className="text-green-400 font-semibold">300 points</span>
-                  </div>
-                  <div className="flex items-center justify-between bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm">
-                    <span className="text-gray-300">$1000–∞</span>
-                    <span className="text-green-400 font-semibold">1000 points</span>
-                  </div>
-                </div>
+                <h3 className="font-editorial text-2xl sm:text-3xl font-normal text-[#064E3B]">
+                  Contribution Tiers &amp; Points
+                </h3>
+                <p className="text-xs text-[#064E3B]/60 font-sans mt-0.5">
+                  Points awarded upon verified contribution receipt
+                </p>
               </div>
+              <Coins className="w-6 h-6 text-[#064E3B]/60 hidden sm:block" />
+            </div>
+
+            <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 pt-6 font-sans">
+              {[
+                { range: '$50–$99', pts: '15 points' },
+                { range: '$100–$299', pts: '30 points' },
+                { range: '$300–$499', pts: '100 points' },
+                { range: '$500–$999', pts: '300 points' },
+                { range: '$1,000+', pts: '1,000 points' },
+              ].map((tier, idx) => (
+                <div key={idx} className="rounded-[8px] bg-[#064E3B]/[0.03] border border-[#064E3B]/10 p-3.5 text-center">
+                  <span className="text-xs text-[#064E3B]/70 block">{tier.range}</span>
+                  <span className="text-sm font-bold text-[#064E3B] block mt-1">{tier.pts}</span>
+                </div>
+              ))}
             </div>
           </motion.div>
         )}
 
-
         {/* Contribution Form */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
-          className="mobile-glass rounded-xl mobile-card mb-6 sm:mb-8"
+          transition={{ duration: 1.5, ease: 'easeOut' }}
+          className="rounded-[8px] sm:rounded-[10px] bg-[#FFFDF9] border border-[#064E3B]/15 p-6 sm:p-8 text-[#064E3B] shadow-[0_8px_30px_rgba(6,78,59,0.06)] space-y-6"
         >
-          <h3 className="mobile-subheader font-bold text-white mb-4 sm:mb-6">Make a Contribution</h3>
+          <div className="pb-4 border-b border-[#064E3B]/10">
+            <h3 className="font-editorial text-2xl sm:text-3xl font-normal text-[#064E3B]">
+              Make a Contribution
+            </h3>
+            <p className="text-xs text-[#064E3B]/60 font-sans mt-0.5">
+              Select your currency and enter payment details
+            </p>
+          </div>
 
-          {/* Amount Input */}
-          <div className="mb-4 sm:mb-6">
-            <label className="block text-white font-semibold mb-2 mobile-text">
-              <DollarSign className="w-4 h-4 sm:w-5 sm:h-5 inline mr-1" />
-              Enter Amount in USD
-            </label>
-            <input
-              type={canContribute ? "number" : "text"}
-              value={canContribute ? amount : "Contributions are disabled"}
-              onChange={(e) => canContribute && setAmount(e.target.value)}
-              placeholder="$50"
-              className={`w-full bg-white/10 border rounded-lg px-3 sm:px-4 py-3 text-white placeholder-gray-400 focus:border-purple-500 focus:outline-none mobile-text touch-target transition-all ${
-                !canContribute 
-                  ? 'border-amber-500/50 bg-amber-500/10 text-amber-400 font-bold text-center cursor-not-allowed' 
-                  : 'border-white/20'
-              }`}
-              min="50"
-              disabled={!canContribute}
-            />
-            <p className="mt-2 text-xs sm:text-sm text-gray-300">Enter amount in USD</p>
-            {amount && hasContributionRound && (
-              <div className="mt-2 text-xs sm:text-sm">
-                <span className="text-gray-300">You will earn: </span>
-                <span className="text-green-400 font-bold">{getPointsForAmount(amount)} points</span>
+          <div className="space-y-5 font-sans">
+            {/* Amount Input */}
+            <div>
+              <label className="block text-xs sm:text-sm font-semibold text-[#064E3B] mb-1.5">
+                Enter Amount in USD
+              </label>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-[#064E3B]/50 font-bold">
+                  $
+                </div>
+                <input
+                  type={canContribute ? "number" : "text"}
+                  value={canContribute ? amount : "Contributions are currently disabled"}
+                  onChange={(e) => canContribute && setAmount(e.target.value)}
+                  placeholder="50"
+                  className={`w-full pl-8 pr-4 py-2.5 bg-white border rounded-[8px] text-sm text-[#064E3B] placeholder-[#064E3B]/35 focus:outline-none focus:ring-2 focus:ring-[#064E3B]/25 focus:border-[#064E3B] transition-all ${
+                    !canContribute 
+                      ? 'border-amber-500/40 bg-amber-50/50 text-amber-700 font-medium cursor-not-allowed' 
+                      : 'border-[#064E3B]/20'
+                  }`}
+                  min="50"
+                  disabled={!canContribute}
+                />
               </div>
-            )}
-          </div>
-
-          {/* Cryptocurrency Selection */}
-          <div className="mb-4 sm:mb-6">
-            <label className="block text-white font-semibold mb-2 mobile-text">
-              Select Cryptocurrency
-            </label>
-            <div className="grid grid-cols-2 sm:grid-cols-3 responsive-gap">
-              {wallets.map((crypto) => (
-                <button
-                  key={crypto.symbol}
-                  onClick={() => setSelectedCoin(crypto.symbol)}
-                  className={`p-2 sm:p-3 rounded-lg border-2 transition-all duration-300 touch-target ${selectedCoin === crypto.symbol
-                    ? 'border-purple-500 bg-purple-500/20 text-white'
-                    : 'border-white/20 bg-white/5 text-gray-300 hover:border-purple-400'
-                    } ${!canContribute ? 'opacity-50 cursor-not-allowed' : ''}`}
-                  disabled={wallets.length === 0 || !canContribute}
-                >
-                  <div className="font-bold text-sm sm:text-base">{crypto.symbol}</div>
-                  <div className="text-xs text-gray-400">{crypto.name}</div>
-                  {crypto.rate && (
-                    <div className="text-xs text-green-400">${crypto.rate}</div>
-                  )}
-                </button>
-              ))}
+              <p className="mt-1.5 text-xs text-[#064E3B]/60">Minimum contribution amount is $50</p>
+              {amount && hasContributionRound && (
+                <div className="mt-1.5 text-xs">
+                  <span className="text-[#064E3B]/70">You will earn: </span>
+                  <span className="text-[#064E3B] font-bold">{getPointsForAmount(amount)} points</span>
+                </div>
+              )}
             </div>
-          </div>
 
-          {/* Estimate Display */}
-          {amount && selectedCoin && cryptoAmount && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
-              className="bg-white/10 rounded-xl p-4 mb-6"
-            >
-              <h4 className="text-white font-semibold mb-3">Payment Details</h4>
-              <div className="space-y-2 text-sm">
+            {/* Cryptocurrency Selection */}
+            <div>
+              <label className="block text-xs sm:text-sm font-semibold text-[#064E3B] mb-2">
+                Select Cryptocurrency
+              </label>
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                {wallets.map((crypto) => (
+                  <button
+                    key={crypto.symbol}
+                    type="button"
+                    onClick={() => setSelectedCoin(crypto.symbol)}
+                    className={`p-3 rounded-[8px] border text-left transition-all cursor-pointer ${
+                      selectedCoin === crypto.symbol
+                        ? 'border-[#064E3B] bg-[#064E3B]/[0.08] text-[#064E3B] ring-2 ring-[#064E3B]/20'
+                        : 'border-[#064E3B]/15 bg-white/60 hover:bg-[#064E3B]/[0.03] text-[#064E3B]/80'
+                    } ${!canContribute ? 'opacity-50 cursor-not-allowed' : ''}`}
+                    disabled={wallets.length === 0 || !canContribute}
+                  >
+                    <div className="font-bold text-sm sm:text-base text-[#064E3B]">{crypto.symbol}</div>
+                    <div className="text-xs text-[#064E3B]/60 truncate">{crypto.name}</div>
+                    {crypto.rate && (
+                      <div className="text-xs text-[#064E3B] font-semibold mt-0.5">${crypto.rate}</div>
+                    )}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Estimate Display */}
+            {amount && selectedCoin && cryptoAmount && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 'auto' }}
+                className="rounded-[8px] bg-[#064E3B]/[0.03] border border-[#064E3B]/10 p-4 space-y-2 text-sm"
+              >
+                <h4 className="font-semibold text-[#064E3B] text-xs uppercase tracking-wider">Payment Estimate</h4>
                 <div className="flex justify-between">
-                  <span className="text-gray-300">USD Amount:</span>
-                  <span className="text-white font-semibold">${amount}</span>
+                  <span className="text-[#064E3B]/70">USD Amount:</span>
+                  <span className="font-semibold text-[#064E3B]">${amount}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-300">Crypto Amount:</span>
-                  <span className="text-white font-semibold">{cryptoAmount} {selectedCoin}</span>
+                  <span className="text-[#064E3B]/70">Crypto Amount:</span>
+                  <span className="font-semibold text-[#064E3B]">{cryptoAmount} {selectedCoin}</span>
                 </div>
                 {(hasContributionRound || publicContributionsEnabled) && (
-                  <div className="flex justify-between">
-                    <span className="text-gray-300">Points to Earn:</span>
-                    <span className="text-green-400 font-semibold">{getPointsForAmount(amount)} pts</span>
+                  <div className="flex justify-between pt-1 border-t border-[#064E3B]/10">
+                    <span className="text-[#064E3B]/70">Points to Earn:</span>
+                    <span className="font-bold text-[#064E3B]">{getPointsForAmount(amount)} pts</span>
                   </div>
                 )}
-              </div>
-            </motion.div>
-          )}
+              </motion.div>
+            )}
 
-          {/* Generate / Scan Buttons */}
-          <button
-            onClick={handleGenerateQR}
-            disabled={!amount || !selectedCoin || parseFloat(amount) < 50 || (!cryptoAmount && !walletAddress)}
-            className={`mobile-button font-semibold transition-all duration-300 touch-target ${!amount || !selectedCoin || parseFloat(amount) < 50 || (!cryptoAmount && !walletAddress)
-              ? 'bg-gray-600 text-gray-400 cursor-not-allowed'
-              : 'bg-gradient-to-r from-green-500 to-teal-500 hover:from-green-600 hover:to-teal-600 text-white'
+            {/* Generate / Scan Button */}
+            <button
+              type="button"
+              onClick={handleGenerateQR}
+              disabled={!amount || !selectedCoin || parseFloat(amount) < 50 || (!cryptoAmount && !walletAddress)}
+              className={`w-full py-3 font-semibold text-sm rounded-[8px] transition-all shadow-sm cursor-pointer ${
+                !amount || !selectedCoin || parseFloat(amount) < 50 || (!cryptoAmount && !walletAddress)
+                  ? 'bg-[#064E3B]/20 text-[#064E3B]/40 cursor-not-allowed border border-transparent'
+                  : 'bg-[#064E3B] hover:bg-[#043C2D] border border-[#043C2D] text-[#F8E7C9]'
               }`}
-          >
-            View estimate and wallet address (QR Code)
-          </button>
+            >
+              View Estimate &amp; Wallet Address (QR Code)
+            </button>
+          </div>
         </motion.div>
 
         {/* Standalone Submit Proof Section */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-6 mt-6"
+          transition={{ duration: 1.5, ease: 'easeOut' }}
+          className="rounded-[8px] sm:rounded-[10px] bg-[#FFFDF9] border border-[#064E3B]/15 p-6 sm:p-8 text-[#064E3B] shadow-[0_8px_30px_rgba(6,78,59,0.06)] space-y-6"
         >
-          <h3 className="text-xl font-bold text-white mb-6 flex items-center">
-            <CheckCircle className="w-6 h-6 mr-2" />
-            Submit Proof of Payment
-          </h3>
-
-          <div className="space-y-4">
+          <div className="pb-4 border-b border-[#064E3B]/10 flex items-center gap-3">
+            <div className="p-2.5 rounded-[8px] bg-[#064E3B]/[0.08] text-[#064E3B] border border-[#064E3B]/15 shrink-0">
+              <CheckCircle className="w-5 h-5 text-[#064E3B]" />
+            </div>
             <div>
-              <label className="block text-white font-semibold mb-2">Upload Receipt (PNG/JPG/WEBP/HEIC/PDF)</label>
+              <h3 className="font-editorial text-2xl sm:text-3xl font-normal text-[#064E3B]">
+                Submit Proof of Payment
+              </h3>
+              <p className="text-xs text-[#064E3B]/60 font-sans mt-0.5">
+                Upload your transaction receipt for verification and points allocation
+              </p>
+            </div>
+          </div>
+
+          <div className="space-y-4 font-sans">
+            <div>
+              <label className="block text-xs sm:text-sm font-semibold text-[#064E3B] mb-1.5">
+                Upload Receipt (PNG, JPG, PDF)
+              </label>
               <input
                 type="file"
                 accept="image/png,image/jpeg,image/webp,image/heic,application/pdf"
                 onChange={handleReceiptChange}
-                className="w-full bg-white/10 border border-white/20 rounded-lg px-3 py-2 text-white placeholder-gray-400 focus:border-purple-500 focus:outline-none"
+                className="w-full bg-white border border-[#064E3B]/20 rounded-[8px] px-3.5 py-2 text-sm text-[#064E3B] file:mr-3 file:py-1 file:px-3 file:rounded-[6px] file:border-0 file:text-xs file:font-semibold file:bg-[#064E3B] file:text-[#F8E7C9] file:cursor-pointer hover:file:bg-[#043C2D] focus:outline-none focus:ring-2 focus:ring-[#064E3B]/25"
               />
               {receiptFile && (
-                <div className="mt-2 text-xs text-gray-300">
-                  Selected: <span className="text-purple-300">{receiptFile.name}</span>
+                <div className="mt-1.5 text-xs text-[#064E3B]/70">
+                  Selected file: <span className="font-semibold text-[#064E3B]">{receiptFile.name}</span>
                 </div>
               )}
             </div>
 
             <div>
-              <label className="block text-white font-semibold mb-2">Transaction Hash (optional)</label>
+              <label className="block text-xs sm:text-sm font-semibold text-[#064E3B] mb-1.5">
+                Transaction Hash (Optional)
+              </label>
               <input
                 value={transactionHash}
                 onChange={(e) => setTransactionHash(e.target.value)}
                 placeholder="0x..."
-                className="w-full bg-white/10 border border-white/20 rounded-lg px-3 py-2 text-white placeholder-gray-400 focus:border-purple-500 focus:outline-none"
+                className="w-full bg-white border border-[#064E3B]/20 rounded-[8px] px-3.5 py-2.5 text-sm text-[#064E3B] placeholder-[#064E3B]/35 focus:outline-none focus:ring-2 focus:ring-[#064E3B]/25 focus:border-[#064E3B]"
               />
             </div>
-          </div>
 
-          <button
-            onClick={handleSubmitProof}
-            disabled={isSubmitting || !receiptFile}
-            className={`w-full py-3 mt-4 font-semibold rounded-lg transition-all duration-300 ${isSubmitting || !receiptFile
-              ? 'bg-gray-600 text-gray-400 cursor-not-allowed'
-              : 'bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white'
-              }`}
-          >
-            {isSubmitting ? 'Submitting...' : 'Submit Proof'}
-          </button>
+            <div className="pt-2">
+              <button
+                type="button"
+                onClick={handleSubmitProof}
+                disabled={isSubmitting || !receiptFile}
+                className={`w-full py-3 font-semibold text-sm rounded-[8px] transition-all shadow-sm cursor-pointer ${
+                  isSubmitting || !receiptFile
+                    ? 'bg-[#064E3B]/20 text-[#064E3B]/40 cursor-not-allowed border border-transparent'
+                    : 'bg-[#064E3B] hover:bg-[#043C2D] border border-[#043C2D] text-[#F8E7C9]'
+                }`}
+              >
+                {isSubmitting ? 'Submitting...' : 'Submit Proof'}
+              </button>
+            </div>
+          </div>
         </motion.div>
 
-        {/* QR Code Modal */}
-        {showQR && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4"
+        {/* QR Code Modal (Rendered via createPortal to document.body) */}
+        {showQR && typeof document !== 'undefined' && createPortal(
+          <div
+            className="fixed inset-0 bg-[#064E3B]/60 backdrop-blur-sm flex items-center justify-center z-[9999] p-4 font-sans"
             onClick={() => setShowQR(false)}
           >
             <motion.div
-              initial={{ scale: 0.9, y: 20 }}
-              animate={{ scale: 1, y: 0 }}
-              exit={{ scale: 0.9, y: 20 }}
-              className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl p-6 sm:p-8 border border-white/20 w-full max-w-md relative"
+              initial={{ scale: 0.95, opacity: 0, y: 15 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.95, opacity: 0, y: 15 }}
+              transition={{ duration: 0.2, ease: "easeOut" }}
+              className="bg-[#FFFDF9] rounded-[10px] p-6 sm:p-8 border border-[#064E3B]/20 w-full max-w-md relative shadow-[0_24px_60px_rgba(6,78,59,0.22)] text-[#064E3B] space-y-4"
               onClick={(e) => e.stopPropagation()}
             >
-              <h3 className="text-xl sm:text-2xl font-bold text-white mb-4">Scan to Pay</h3>
-              <div className="bg-white p-4 rounded-lg flex items-center justify-center mb-4">
+              <div className="pb-3 border-b border-[#064E3B]/10 flex items-center justify-between">
+                <div>
+                  <h3 className="font-editorial text-2xl font-normal text-[#064E3B]">Scan to Pay</h3>
+                  <p className="text-xs text-[#064E3B]/60 mt-0.5">Use your crypto wallet app to scan</p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setShowQR(false)}
+                  className="w-8 h-8 rounded-full flex items-center justify-center text-[#064E3B]/50 hover:text-[#064E3B] hover:bg-[#064E3B]/10 transition-colors text-lg font-bold cursor-pointer"
+                >
+                  ✕
+                </button>
+              </div>
+
+              <div className="bg-white p-4 rounded-[8px] border border-[#064E3B]/15 flex items-center justify-center">
                 {wallets.find(c => c.symbol === selectedCoin)?.qrCode ? (
-                  <img src={wallets.find(c => c.symbol === selectedCoin)?.qrCode} alt="Payment QR" className="mx-auto h-56 w-56 object-contain" />
+                  <img src={wallets.find(c => c.symbol === selectedCoin)?.qrCode} alt="Payment QR" className="mx-auto h-52 w-52 object-contain" />
                 ) : (
-                  <QRCodeSVG value={generateQRCodeData()} size={224} />
+                  <QRCodeSVG value={generateQRCodeData()} size={208} />
                 )}
               </div>
-              <div className="text-center text-white mb-4">
-                <p className="text-lg font-semibold">{cryptoAmount} {selectedCoin}</p>
-                <p className="text-sm text-gray-400">≈ ${amount} USD</p>
+
+              <div className="text-center">
+                <p className="text-base sm:text-lg font-bold text-[#064E3B]">{cryptoAmount} {selectedCoin}</p>
+                <p className="text-xs text-[#064E3B]/60">≈ ${amount} USD</p>
               </div>
-              <div className="bg-black/20 rounded-lg p-3 mb-4">
-                <p className="text-xs text-gray-400 mb-1">Send to this address:</p>
-                <div className="flex items-center justify-between">
-                  <span className="text-purple-300 text-sm break-all mr-2">{walletAddress}</span>
-                  <button onClick={copyWalletAddress} className="p-2 rounded-md hover:bg-white/20">
-                    <Copy className="w-4 h-4 text-white" />
+
+              <div className="bg-[#064E3B]/[0.04] border border-[#064E3B]/10 rounded-[8px] p-3 space-y-1">
+                <p className="text-[11px] font-semibold text-[#064E3B]/60 uppercase tracking-wider">Send to Address:</p>
+                <div className="flex items-center justify-between gap-2">
+                  <span className="font-mono text-xs text-[#064E3B] break-all">{walletAddress}</span>
+                  <button
+                    type="button"
+                    onClick={copyWalletAddress}
+                    className="p-1.5 rounded-[6px] hover:bg-[#064E3B]/10 text-[#064E3B] cursor-pointer shrink-0 transition-colors"
+                    title="Copy Address"
+                  >
+                    <Copy className="w-4 h-4" />
                   </button>
                 </div>
               </div>
+
               <button
+                type="button"
                 onClick={() => setShowQR(false)}
-                className="w-full py-3 bg-purple-600 text-white font-semibold rounded-lg hover:bg-purple-700 transition-colors"
+                className="w-full py-2.5 bg-[#064E3B] text-[#F8E7C9] font-semibold text-sm rounded-[8px] hover:bg-[#043C2D] border border-[#043C2D] shadow-sm transition-colors cursor-pointer"
               >
                 Close
               </button>
             </motion.div>
-          </motion.div>
+          </div>,
+          document.body
         )}
-
 
         {/* Recent Contributions */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-6 mt-8"
+          transition={{ duration: 1.5, ease: 'easeOut' }}
+          className="rounded-[8px] sm:rounded-[10px] bg-[#FFFDF9] border border-[#064E3B]/15 p-6 sm:p-8 text-[#064E3B] shadow-[0_8px_30px_rgba(6,78,59,0.06)] space-y-4"
         >
-          <h3 className="text-xl font-bold text-white mb-6 flex items-center">
-            <Users className="w-6 h-6 mr-2" />
-            Recent Contributions
-          </h3>
-          <div className="space-y-4">
-            {recentContributions.map((c, i) => {
-              const getStatusColor = (status) => {
-                switch (status) {
-                  case 'verified': return 'text-green-400';
-                  case 'approved': return 'text-green-400';
-                  case 'rejected': return 'text-red-400';
-                  case 'under_review': return 'text-blue-400';
-                  default: return 'text-yellow-400';
-                }
-              };
-              const getStatusDot = (status) => {
-                switch (status) {
-                  case 'verified': return 'bg-green-500';
-                  case 'approved': return 'bg-green-500';
-                  case 'rejected': return 'bg-red-500';
-                  case 'under_review': return 'bg-blue-500';
-                  default: return 'bg-yellow-500';
-                }
-              };
-              const getStatusLabel = (status) => {
-                if (status === 'under_review') return 'Under Review';
-                return status.charAt(0).toUpperCase() + status.slice(1);
-              };
+          <div className="pb-3 border-b border-[#064E3B]/10 flex items-center justify-between">
+            <div className="flex items-center gap-2.5">
+              <Users className="w-5 h-5 text-[#064E3B]" />
+              <h3 className="font-editorial text-2xl font-normal text-[#064E3B]">
+                Recent Contributions
+              </h3>
+            </div>
+            <span className="text-xs text-[#064E3B]/60 font-sans">Latest activity</span>
+          </div>
 
-              return (
-                <div key={i} className="flex items-center justify-between bg-white/5 p-3 rounded-lg">
-                  <div className="flex items-center">
-                    <div className={`w-2 h-2 rounded-full mr-3 ${getStatusDot(c.status)}`}></div>
+          <div className="space-y-2.5 font-sans">
+            {recentContributions.length === 0 ? (
+              <div className="p-4 text-center text-xs text-[#064E3B]/60 bg-[#064E3B]/[0.02] rounded-[8px] border border-[#064E3B]/10">
+                No contributions recorded yet.
+              </div>
+            ) : (
+              recentContributions.map((c, i) => {
+                const getStatusColor = (status) => {
+                  switch (status) {
+                    case 'verified': return 'text-emerald-700 bg-emerald-50 border-emerald-200';
+                    case 'approved': return 'text-emerald-700 bg-emerald-50 border-emerald-200';
+                    case 'rejected': return 'text-red-700 bg-red-50 border-red-200';
+                    case 'under_review': return 'text-blue-700 bg-blue-50 border-blue-200';
+                    default: return 'text-amber-700 bg-amber-50 border-amber-200';
+                  }
+                };
+                const getStatusLabel = (status) => {
+                  if (status === 'under_review') return 'Under Review';
+                  return status.charAt(0).toUpperCase() + status.slice(1);
+                };
+
+                return (
+                  <div key={i} className="flex items-center justify-between p-3 rounded-[8px] bg-[#064E3B]/[0.02] border border-[#064E3B]/10">
                     <div>
-                      <p className="text-white font-semibold">{c.user}</p>
-                      <p className="text-xs text-gray-400">{new Date(c.submittedAt).toLocaleString()}</p>
+                      <p className="text-sm font-semibold text-[#064E3B]">{c.user}</p>
+                      <p className="text-xs text-[#064E3B]/50">{new Date(c.submittedAt).toLocaleDateString()}</p>
+                    </div>
+                    <div className="text-right flex items-center gap-3">
+                      <span className="text-sm font-bold text-[#064E3B]">${c.usdValue}</span>
+                      <span className={`text-[11px] font-semibold px-2 py-0.5 rounded-full border ${getStatusColor(c.status)}`}>
+                        {getStatusLabel(c.status)}
+                      </span>
                     </div>
                   </div>
-                  <div className="text-right">
-                    <p className="text-white font-semibold">${c.usdValue}</p>
-                    <p className={`text-xs ${getStatusColor(c.status)}`}>
-                      {getStatusLabel(c.status)}
-                    </p>
-                  </div>
-                </div>
-              );
-            })}
+                );
+              })
+            )}
           </div>
         </motion.div>
-
       </div>
     </div>
   );

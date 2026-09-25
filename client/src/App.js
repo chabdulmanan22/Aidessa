@@ -20,6 +20,7 @@ import ArticleDetail from './pages/ArticleDetail';
 import ScamAlertsResourcePage from './pages/resources/ScamAlertsResourcePage';
 import RefundProgramsResourcePage from './pages/resources/RefundProgramsResourcePage';
 import HowRefundsResourcePage from './pages/resources/HowRefundsResourcePage';
+import JoinWizardLayout from './components/JoinWizardLayout';
 import JoinNotice from './pages/JoinNotice';
 import JoinDetails from './pages/JoinDetails';
 import JoinContact from './pages/JoinContact';
@@ -224,50 +225,23 @@ function App() {
                     }
                   />
                   <Route
-                    path="/join-notice"
                     element={
                       <Layout>
-                        <JoinNotice />
+                        <JoinWizardLayout />
                       </Layout>
                     }
-                  />
-                  <Route
-                    path="/join-details"
-                    element={
-                      <Layout>
-                        <JoinDetails />
-                      </Layout>
-                    }
-                  />
-                  <Route
-                    path="/join-contact"
-                    element={
-                      <Layout>
-                        <JoinContact />
-                      </Layout>
-                    }
-                  />
-                  <Route
-                    path="/join-loss"
-                    element={
-                      <Layout>
-                        <JoinLoss />
-                      </Layout>
-                    }
-                  />
+                  >
+                    <Route path="/join-notice" element={<JoinNotice />} />
+                    <Route path="/join-details" element={<JoinDetails />} />
+                    <Route path="/join-contact" element={<JoinContact />} />
+                    <Route path="/join-loss" element={<JoinLoss />} />
+                    <Route path="/join-submitted" element={<JoinSubmitted />} />
+                  </Route>
                   <Route
                     path="/join-thanks"
                     element={
                       <Layout>
                         <JoinThankYou />
-                      </Layout>
-                    }
-                  />
-                  <Route
-                    path="/join-submitted"
-                    element={
-                      <Layout>
-                        <JoinSubmitted />
                       </Layout>
                     }
                   />

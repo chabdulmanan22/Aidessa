@@ -11,6 +11,7 @@ import { AuthContext } from '../contexts/AuthContext';
 import toast from 'react-hot-toast';
 import axios from 'axios';
 import { getUserMeta, castVote, getActiveVotes as dsGetActiveVotes, submitVoteOption as dsSubmitVoteOption, addPoints } from '../utils/datastore';
+import HeroGridBoxesAnimation from '../components/HeroGridBoxesAnimation';
 
 const Voting = () => {
   const { user } = useContext(AuthContext);
@@ -310,8 +311,9 @@ const Voting = () => {
 
   if (isInitialLoading && activeVotes.length === 0) {
     return (
-      <div className="min-h-screen hero-gradient flex items-center justify-center">
-        <div className="text-white text-xl animate-pulse">Loading voting data...</div>
+      <div className="relative w-full min-h-screen bg-[#F8E7C9] flex items-center justify-center overflow-hidden">
+        <HeroGridBoxesAnimation />
+        <div className="relative z-10 font-editorial text-2xl text-[#064E3B]">Loading voting data...</div>
       </div>
     );
   }
@@ -325,197 +327,257 @@ const Voting = () => {
   }, 0);
 
   return (
-    <div className="min-h-screen hero-gradient mobile-padding py-6">
-      <div className="max-w-7xl mx-auto">
+    <div className="relative w-full min-h-[calc(100vh-4rem)] bg-[#F8E7C9] text-[#064E3B] py-8 sm:py-12 overflow-hidden">
+      {/* Persistent Animated Grid Texture */}
+      <HeroGridBoxesAnimation />
+
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6 sm:space-y-8">
         {/* Header */}
         <motion.div
-          initial={{ opacity: 0, y: -20 }}
+          initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="mb-6 sm:mb-8"
+          transition={{ duration: 1.5, ease: 'easeOut' }}
+          className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2"
         >
-          <h1 className="mobile-header font-bold text-white mb-2">
-            Voting
-          </h1>
-          <p className="text-gray-300 mobile-text">
-            Cast your vote on decisions and earn points
-          </p>
+          <div>
+            <h1 className="font-editorial text-3xl sm:text-4xl md:text-5xl font-normal text-[#064E3B] tracking-[-0.02em]">
+              Voting
+            </h1>
+            <p className="text-[#064E3B]/70 text-sm sm:text-base font-sans mt-1">
+              Cast your vote on decisions and earn points
+            </p>
+          </div>
         </motion.div>
 
-        {/* Ineligibility Message for 0 Verified Loss */}
+        {/* Ineligibility Message for 0 Verified Loss (Clean Text, No Card, No Icon) */}
         {user && (user.verifiedLoss || 0) <= 0 && (
           <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="mb-8 p-6 rounded-2xl bg-red-950/85 border-2 border-red-500/70 backdrop-blur-md flex items-start gap-4 shadow-xl shadow-red-950/60"
+            initial={{ opacity: 0, y: 5 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1.5, ease: 'easeOut' }}
+            className="space-y-1"
           >
-            <div className="bg-red-600 rounded-full p-2.5 flex-shrink-0 animate-pulse shadow-md">
-              <AlertCircle className="w-6 h-6 text-white" />
-            </div>
-            <div>
-              <h3 className="text-white text-xl font-black tracking-tight mb-1">Voting Restricted</h3>
-              <p className="text-red-100 font-bold text-sm sm:text-base leading-snug">
-                You are not eligible to vote because you do not have a verified loss.
-              </p>
-              <p className="text-red-200 font-bold text-xs mt-2.5 bg-red-900/80 px-3 py-1.5 rounded-lg border border-red-500/40 inline-block shadow-xs">
-                Voting is reserved for verified holders who have experienced financial losses.
-              </p>
-            </div>
+            <h3 className="font-editorial text-xl sm:text-2xl font-normal text-red-700">
+              Voting Restricted
+            </h3>
+            <p className="text-[#064E3B]/80 text-sm sm:text-base font-sans leading-relaxed">
+              You are not eligible to vote because you do not have a verified loss.
+            </p>
+            <p className="text-red-700/80 text-xs sm:text-sm font-sans">
+              Voting is reserved for verified holders who have experienced financial losses.
+            </p>
           </motion.div>
         )}
 
-        {/* Voting Status */}
+        {/* Voting Status Card */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
-          className="mobile-glass rounded-xl mobile-card mb-6 sm:mb-8"
+          transition={{ duration: 1.5, ease: 'easeOut' }}
+          className="rounded-[8px] sm:rounded-[10px] bg-[#FFFDF9] border border-[#064E3B]/15 p-6 sm:p-8 text-[#064E3B] shadow-[0_8px_30px_rgba(6,78,59,0.06)]"
         >
-          <div className="flex items-center justify-between">
-            <div className="flex items-center">
-              <Vote className="w-6 h-6 text-green-400 mr-3" />
+          <div className="pb-4 border-b border-[#064E3B]/10 min-h-[44px] flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="p-2.5 rounded-[8px] bg-[#064E3B]/[0.08] text-[#064E3B] border border-[#064E3B]/15 shrink-0">
+                <Vote className="w-5 h-5 sm:w-6 sm:h-6" />
+              </div>
               <div>
-                <h3 className="text-lg font-bold text-white">Voting Status</h3>
-                <p className="text-gray-300 text-sm">
-                  Voting rights: <span className="text-green-400 font-bold">{headerRemaining}</span> of <span className="text-green-400 font-bold">{headerAllowed}</span> remaining
+                <h3 className="font-editorial text-2xl sm:text-3xl font-normal text-[#064E3B]">
+                  Voting Status
+                </h3>
+                <p className="text-[#064E3B]/60 text-xs font-sans mt-0.5">
+                  Your active rights and round allocations
                 </p>
-                <p className="text-gray-300 text-xs">
-                  Used: <span className="text-white font-bold">{headerUsed}</span>
-                </p>
-                {/* Removed global voting rights display for clarity */}
               </div>
             </div>
-            <div className="flex items-center gap-4">
-              <div className="text-right">
-                {/* Total votes label removed */}
+            <span className="text-xs font-bold uppercase tracking-wider text-[#064E3B]/60 font-sans hidden sm:inline-block">
+              Live Allocation
+            </span>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 pt-6">
+            <div className="rounded-[8px] bg-[#064E3B]/[0.03] border border-[#064E3B]/10 p-5">
+              <h4 className="text-[11px] font-bold text-[#064E3B]/60 uppercase tracking-wider mb-1.5 font-sans">
+                Total Rights
+              </h4>
+              <div className="font-editorial text-2xl sm:text-3xl font-normal text-[#064E3B]">
+                {headerAllowed}
               </div>
+              <p className="text-[#064E3B]/60 text-xs font-sans mt-1">Total voting rights available</p>
+            </div>
+
+            <div className="rounded-[8px] bg-[#064E3B]/[0.03] border border-[#064E3B]/10 p-5">
+              <h4 className="text-[11px] font-bold text-[#064E3B]/60 uppercase tracking-wider mb-1.5 font-sans">
+                Rights Used
+              </h4>
+              <div className="font-editorial text-2xl sm:text-3xl font-normal text-[#064E3B]">
+                {headerUsed}
+              </div>
+              <p className="text-[#064E3B]/60 text-xs font-sans mt-1">Total votes cast across rounds</p>
+            </div>
+
+            <div className="rounded-[8px] bg-[#064E3B]/[0.06] border border-[#064E3B]/20 p-5">
+              <h4 className="text-[11px] font-bold text-[#064E3B]/70 uppercase tracking-wider mb-1.5 font-sans">
+                Remaining Rights
+              </h4>
+              <div className="font-editorial text-2xl sm:text-3xl font-normal text-[#064E3B]">
+                {headerRemaining}
+              </div>
+              <p className="text-[#064E3B]/60 text-xs font-sans mt-1">Available to cast now</p>
             </div>
           </div>
         </motion.div>
 
         {/* Active Votes (admin-set) */}
-        <div className="mb-8">
+        <div>
           {(!activeVotes || activeVotes.length === 0) ? (
-            <div className="mobile-glass rounded-xl mobile-card p-6">
-              <div className="flex items-center gap-3">
-                <AlertCircle className="w-5 h-5 text-yellow-400" />
-                <p className="text-gray-300">No active voting round. Please check back later.</p>
+            <motion.div
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1.5, ease: 'easeOut' }}
+              className="rounded-[8px] sm:rounded-[10px] bg-[#FFFDF9] border border-[#064E3B]/15 p-8 sm:p-10 text-center text-[#064E3B] shadow-[0_8px_30px_rgba(6,78,59,0.06)]"
+            >
+              <div className="w-12 h-12 rounded-full bg-[#064E3B]/[0.08] text-[#064E3B] border border-[#064E3B]/15 flex items-center justify-center mx-auto mb-3">
+                <Vote className="w-6 h-6" />
               </div>
-            </div>
+              <h4 className="font-editorial text-2xl font-normal text-[#064E3B] mb-1">
+                No Active Voting Rounds
+              </h4>
+              <p className="text-[#064E3B]/60 text-sm font-sans max-w-md mx-auto">
+                There are currently no proposals open for voting. Please check back later.
+              </p>
+            </motion.div>
           ) : (
             <div className="space-y-6">
-              {activeVotes.map((vote) => (
-                <motion.div
-                  key={vote.id}
-                  id={`vote-${vote.id}`}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="mobile-glass rounded-xl mobile-card p-6"
-                >
-                  <div className="flex items-center mb-4">
-                    <BarChart3 className="w-6 h-6 text-blue-400 mr-3" />
-                    <h3 className="text-xl font-bold text-white">{vote.title}</h3>
-                  </div>
-                  {vote.description && (
-                    <p className="text-gray-300 text-sm mb-6">{vote.description}</p>
-                  )}
-                  {vote.endTime && (
-                    <div className="mb-4 p-3 bg-white/5 rounded-lg flex items-center gap-2">
-                      <Clock className="w-4 h-4 text-orange-400" />
-                      <span className="text-gray-200 text-sm">Time remaining:</span>
-                      <span className="font-mono font-bold text-white">{formatRemaining(vote.endTime)}</span>
-                    </div>
-                  )}
-                  <div className="space-y-3">
-                    {vote.options.map((opt) => {
-                      const isSelected = selectedOptions[vote.id] === opt.id;
-                      // Check submissions by both email and user ID
-                      const { remaining: perRoundRemaining } = getVoteRights(vote);
-                      const hasVerifiedLoss = (user?.verifiedLoss || 0) > 0;
-                      const disabled = vote.status !== 'active' || perRoundRemaining <= 0 || !hasVerifiedLoss;
-
-                      const displayedVotes = getDisplayedVotes(vote, opt);
-                      const goalVotes = opt.targetVotes || 0;
-
-                      // Percentage toward the individual goal (targetVotes)
-                      // Falls back to share-of-round if no target is set
-                      const totalInRound = vote.options.reduce((acc, o) => acc + getDisplayedVotes(vote, o), 0);
-                      const goalPercentage = goalVotes > 0
-                        ? Math.min(100, (displayedVotes / goalVotes) * 100)
-                        : (totalInRound > 0 ? (displayedVotes / totalInRound) * 100 : 0);
-
-                      // Smooth (float) version for bar animation
-                      const smoothDisplayed = getSmoothValue(vote, opt);
-                      const smoothWidth = goalVotes > 0
-                        ? Math.min(100, (smoothDisplayed / goalVotes) * 100)
-                        : getSmoothProgress(vote, opt);
-
-                      return (
-                        <div key={opt.id} className="relative">
-                          <button
-                            onClick={() => !disabled && onSelectOption(vote, opt)}
-                            disabled={disabled}
-                            className={`w-full p-4 rounded-lg border-2 transition-all duration-300 flex items-center justify-between relative overflow-hidden ${isSelected ? 'border-cyan-400/80 bg-cyan-950/40 shadow-md shadow-cyan-950/50' : 'border-white/10 hover:border-cyan-400/60'
-                              } ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
-                          >
-                            {/* Background fill: goal-based */}
-                            <div
-                              className="absolute left-0 top-0 bottom-0 bg-cyan-500/15 transition-all duration-1000"
-                              style={{ width: `${smoothWidth}%` }}
-                            />
-
-                            <div className="flex items-center gap-3 relative z-10">
-                              <div className={`w-5 h-5 rounded-full border-2 ${isSelected ? 'border-cyan-400 bg-cyan-500' : 'border-gray-400 bg-transparent'
-                                }`}></div>
-                              <span className="font-semibold text-white">{opt.text}</span>
-                            </div>
-                            <div className="text-right relative z-10">
-                              <span className="text-sm font-bold text-white block">
-                                {displayedVotes}
-                              </span>
-                              <span className="text-[10px] text-cyan-200/70">
-                                Total votes
-                              </span>
-                            </div>
-                          </button>
-
-                          {/* Animated bottom bar: goal-based width */}
-                          <div className="absolute bottom-0 left-0 right-0 h-1 bg-white/5 rounded-b-lg overflow-hidden">
-                            <motion.div
-                              initial={{ width: 0 }}
-                              animate={{ width: `${smoothWidth}%` }}
-                              transition={{ duration: 0.8, ease: 'easeOut' }}
-                              className="h-full bg-gradient-to-r from-[#086a7e] to-[#0ea5e9]"
-                            />
-                          </div>
+              {activeVotes.map((vote) => {
+                const { remaining: perRoundRemaining, total: perRoundTotal } = getVoteRights(vote);
+                const hasVerifiedLoss = (user?.verifiedLoss || 0) > 0;
+                return (
+                  <motion.div
+                    key={vote.id}
+                    id={`vote-${vote.id}`}
+                    initial={{ opacity: 0, y: 15 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 1.5, ease: 'easeOut' }}
+                    className="rounded-[8px] sm:rounded-[10px] bg-[#FFFDF9] border border-[#064E3B]/15 p-6 sm:p-8 text-[#064E3B] shadow-[0_8px_30px_rgba(6,78,59,0.06)]"
+                  >
+                    <div className="pb-4 border-b border-[#064E3B]/10 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                      <div className="flex items-center gap-3">
+                        <div className="p-2.5 rounded-[8px] bg-[#064E3B]/[0.08] text-[#064E3B] border border-[#064E3B]/15 shrink-0">
+                          <BarChart3 className="w-5 h-5 text-[#064E3B]" />
                         </div>
-                      );
-                    })}
-                  </div>
-                  <div className="mt-4 text-xs text-gray-300">
-                    Your remaining in this round: <span className="text-cyan-300 font-bold">{getVoteRights(vote).remaining}</span> of <span className="text-cyan-300 font-bold">{getVoteRights(vote).total}</span>
-                  </div>
-                  <div className="mt-4 flex items-center justify-end gap-3">
-                    <button
-                      onClick={() => onSubmitVote(vote)}
-                      disabled={selectedOptions[vote.id] == null || vote.status !== 'active' || (
-                        getVoteRights(vote).remaining <= 0
+                        <div>
+                          <h3 className="font-editorial text-2xl sm:text-3xl font-normal text-[#064E3B]">
+                            {vote.title}
+                          </h3>
+                        </div>
+                      </div>
+
+                      {vote.endTime && (
+                        <div className="flex items-center gap-2 text-xs sm:text-sm font-sans text-[#064E3B]/75 bg-[#064E3B]/[0.04] border border-[#064E3B]/10 px-3 py-1.5 rounded-[6px] shrink-0">
+                          <Clock className="w-4 h-4 text-[#064E3B]" />
+                          <span>Time remaining:</span>
+                          <span className="font-mono font-bold text-[#064E3B] bg-[#064E3B]/10 px-2 py-0.5 rounded-full border border-[#064E3B]/20">
+                            {formatRemaining(vote.endTime)}
+                          </span>
+                        </div>
                       )}
-                      className="px-5 py-2.5 bg-gradient-to-r from-[#086a7e] to-[#0e7490] text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:from-[#097d95] hover:to-[#0891b2] shadow-md shadow-cyan-950/50 transition-all duration-200 font-semibold"
-                    >
-                      Submit Vote
-                    </button>
+                    </div>
 
+                    {vote.description && (
+                      <p className="text-[#064E3B]/70 text-sm font-sans my-4 leading-relaxed">
+                        {vote.description}
+                      </p>
+                    )}
 
-                  </div>
-                </motion.div>
-              ))}
+                    <div className="space-y-3 mt-4">
+                      {vote.options.map((opt) => {
+                        const isSelected = selectedOptions[vote.id] === opt.id;
+                        const disabled = vote.status !== 'active' || perRoundRemaining <= 0 || !hasVerifiedLoss;
+
+                        const displayedVotes = getDisplayedVotes(vote, opt);
+                        const goalVotes = opt.targetVotes || 0;
+
+                        const smoothDisplayed = getSmoothValue(vote, opt);
+                        const smoothWidth = goalVotes > 0
+                          ? Math.min(100, (smoothDisplayed / goalVotes) * 100)
+                          : getSmoothProgress(vote, opt);
+
+                        return (
+                          <div key={opt.id} className="relative rounded-[8px] overflow-hidden border border-[#064E3B]/15 hover:border-[#064E3B]/40 transition-colors">
+                            <button
+                              type="button"
+                              onClick={() => !disabled && onSelectOption(vote, opt)}
+                              disabled={disabled}
+                              className={`w-full p-4 transition-all duration-300 flex items-center justify-between relative overflow-hidden text-left cursor-pointer ${
+                                isSelected
+                                  ? 'bg-[#064E3B]/[0.08] border-[#064E3B]'
+                                  : 'bg-white hover:bg-[#064E3B]/[0.02]'
+                              } ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
+                            >
+                              {/* Background fill: goal-based */}
+                              <div
+                                className="absolute left-0 top-0 bottom-0 bg-[#064E3B]/[0.06] transition-all duration-1000"
+                                style={{ width: `${smoothWidth}%` }}
+                              />
+
+                              <div className="flex items-center gap-3 relative z-10">
+                                <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 transition-colors ${
+                                  isSelected ? 'border-[#064E3B] bg-[#064E3B]' : 'border-[#064E3B]/40 bg-white'
+                                }`}>
+                                  {isSelected && <span className="w-2 h-2 rounded-full bg-[#F8E7C9]" />}
+                                </div>
+                                <span className="font-semibold text-sm sm:text-base text-[#064E3B] font-sans">
+                                  {opt.text}
+                                </span>
+                              </div>
+                              <div className="text-right relative z-10">
+                                <span className="text-sm font-bold text-[#064E3B] block font-mono">
+                                  {displayedVotes}
+                                </span>
+                                <span className="text-[10px] text-[#064E3B]/60 font-sans uppercase tracking-wider">
+                                  Total votes
+                                </span>
+                              </div>
+                            </button>
+
+                            {/* Animated bottom bar */}
+                            <div className="absolute bottom-0 left-0 right-0 h-1 bg-[#064E3B]/10 overflow-hidden">
+                              <motion.div
+                                initial={{ width: 0 }}
+                                animate={{ width: `${smoothWidth}%` }}
+                                transition={{ duration: 1.5, ease: 'easeOut' }}
+                                className="h-full bg-[#064E3B]"
+                              />
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+
+                    <div className="mt-5 pt-4 border-t border-[#064E3B]/10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                      <div className="text-xs text-[#064E3B]/70 font-sans">
+                        Your remaining in this round: <span className="text-[#064E3B] font-bold font-mono">{perRoundRemaining}</span> of <span className="text-[#064E3B] font-bold font-mono">{perRoundTotal}</span>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => onSubmitVote(vote)}
+                        disabled={selectedOptions[vote.id] == null || vote.status !== 'active' || perRoundRemaining <= 0 || !hasVerifiedLoss}
+                        className="w-full sm:w-auto px-6 py-2.5 bg-[#064E3B] hover:bg-[#043C2D] text-[#F8E7C9] rounded-[8px] font-semibold text-sm transition-all shadow-sm disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer flex items-center justify-center gap-2"
+                      >
+                        <span>{submittingVoteId === vote.id ? 'Submitting...' : 'Submit Vote'}</span>
+                      </button>
+                    </div>
+                  </motion.div>
+                );
+              })}
             </div>
           )}
         </div>
-
-        {/* No dummy stats/history. Only live active votes are shown. */}
       </div>
     </div>
   );
 };
 
 export default Voting;
+

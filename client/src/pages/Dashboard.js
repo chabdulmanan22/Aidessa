@@ -5,13 +5,7 @@ import {
   Vote,
   Coins,
   Users,
-  Settings,
   Copy,
-  Eye,
-  EyeOff,
-  LogOut,
-  User,
-  Lock,
   Clock,
   Timer
 } from 'lucide-react';
@@ -20,6 +14,7 @@ import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import axios from 'axios';
 import { getUserMeta, getActivityLog, getActiveVotes as dsGetActiveVotes } from '../utils/datastore';
+import HeroGridBoxesAnimation from '../components/HeroGridBoxesAnimation';
 
 const LiveTimer = ({ endTime, onExpire }) => {
   const [timeLeft, setTimeLeft] = useState('');
@@ -53,18 +48,8 @@ const LiveTimer = ({ endTime, onExpire }) => {
 
 
 const Dashboard = () => {
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
   const navigate = useNavigate();
-  const [showSettings, setShowSettings] = useState(false);
-  const [showResetPassword, setShowResetPassword] = useState(false);
-  const [resetEmail, setResetEmail] = useState('');
-  const [otpCode, setOtpCode] = useState('');
-  const [newPass, setNewPass] = useState('');
-  const [confirmPass, setConfirmPass] = useState('');
-  const [sendingOtp, setSendingOtp] = useState(false);
-  const [changingPwd, setChangingPwd] = useState(false);
-  const [showNewPass, setShowNewPass] = useState(false);
-  const [showConfirmPass, setShowConfirmPass] = useState(false);
   const [totalPoints, setTotalPoints] = useState(0);
   const [pointsVoting, setPointsVoting] = useState(0);
   const [pointsContribution, setPointsContribution] = useState(0);
@@ -239,80 +224,12 @@ const Dashboard = () => {
     toast.success('Referral link copied to clipboard!');
   };
 
-  const handleVote = () => {
-    navigate('/voting');
-  };
-
-  const handleContribute = () => {
-    navigate('/contribute');
-  };
-
-  const handleLogout = () => {
-    logout();
-    navigate('/login');
-  };
-
-  const handleEditProfile = () => {
-    navigate('/profile?edit=1');
-  };
-  const openResetPassword = () => {
-    setResetEmail(user?.email || '');
-    setShowResetPassword(true);
-  };
-  const dashSendOtp = async () => {
-    if (!resetEmail) {
-      toast.error('Enter your email first');
-      return;
-    }
-    setSendingOtp(true);
-    try {
-      await axios.post('/api/password/forgot-otp', { email: resetEmail });
-      toast.success('OTP sent to your email');
-    } catch (e) {
-      const msg = e.response?.data?.message || 'Failed to send OTP';
-      toast.error(msg);
-    } finally {
-      setSendingOtp(false);
-    }
-  };
-  const dashChangePasswordWithOtp = async () => {
-    if (!resetEmail) {
-      toast.error('Enter your email');
-      return;
-    }
-    if (!otpCode) {
-      toast.error('Enter the OTP');
-      return;
-    }
-    if (!newPass || newPass.length < 8) {
-      toast.error('Password must be at least 8 characters');
-      return;
-    }
-    if (newPass !== confirmPass) {
-      toast.error('Passwords do not match');
-      return;
-    }
-    setChangingPwd(true);
-    try {
-      await axios.post('/api/password/reset-otp', { email: resetEmail, otp: otpCode, newPassword: newPass });
-      toast.success('Password changed. You can log in now');
-      setShowResetPassword(false);
-      setOtpCode('');
-      setNewPass('');
-      setConfirmPass('');
-    } catch (e) {
-      const msg = e.response?.data?.message || 'Failed to change password';
-      toast.error(msg);
-    } finally {
-      setChangingPwd(false);
-    }
-  };
-
 
   if (!user) {
     return (
-      <div className="min-h-screen hero-gradient flex items-center justify-center">
-        <div className="text-white text-xl">Loading...</div>
+      <div className="relative w-full min-h-screen bg-[#F8E7C9] flex items-center justify-center overflow-hidden">
+        <HeroGridBoxesAnimation />
+        <div className="relative z-10 font-editorial text-2xl text-[#064E3B]">Loading dashboard...</div>
       </div>
     );
   }
@@ -370,74 +287,67 @@ const Dashboard = () => {
   const dashRemaining = Math.max(0, dashAllowed - dashUsed);
 
   return (
-    <div className="min-h-screen hero-gradient py-6">
-      {/* Top Edge-to-Edge Section (No side padding) */}
-      <div className="w-full mb-6">
+    <div className="relative w-full min-h-[calc(100vh-4rem)] bg-[#F8E7C9] text-[#064E3B] py-8 sm:py-12 overflow-hidden">
+      {/* Persistent Animated Grid Texture */}
+      <HeroGridBoxesAnimation />
+
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6 sm:space-y-8">
         {/* Header */}
         <motion.div
-          initial={{ opacity: 0, x: -50 }}
-          animate={{ opacity: 1, x: 0 }}
-          className="mb-6 sm:mb-8 px-4 sm:px-6"
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2"
         >
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
-            <div>
-              <h1 className="mobile-header font-bold text-white mb-2">
-                Welcome back, {user?.firstName}!
-              </h1>
-            </div>
-
+          <div>
+            <h1 className="font-editorial text-3xl sm:text-4xl md:text-5xl font-normal text-[#064E3B] tracking-[-0.02em]">
+              Welcome back, {user?.firstName}!
+            </h1>
+            <p className="text-[#064E3B]/70 text-sm sm:text-base font-sans mt-1">
+              Track your restitution progress, active voting rounds, and ecosystem participation.
+            </p>
           </div>
         </motion.div>
 
-        {/* Spam Notification Banner */}
-        <div className="mb-6 px-4 sm:px-6">
-          <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            animate={{ opacity: 1, x: 0 }}
-            className="bg-yellow-500/20 border border-yellow-500/30 rounded-xl p-4 backdrop-blur-sm flex items-start gap-3"
-          >
-            <div className="p-2 bg-yellow-500/20 rounded-full shrink-0">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-yellow-300" viewBox="0 0 20 20" fill="currentColor">
-                <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
-              </svg>
-            </div>
-            <p className="text-yellow-100 text-sm md:text-base font-medium py-1">
-              If our emails have landed in your spam or junk folder, please mark them as “Not Spam” to ensure you receive future restitution updates.
-            </p>
-          </motion.div>
-        </div>
+        {/* Spam Notification Statement (Clean Text, No Card, No Icon) */}
+        <motion.p
+          initial={{ opacity: 0, y: 5 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-[#064E3B]/80 text-sm sm:text-base font-medium font-sans leading-relaxed"
+        >
+          If our emails have landed in your spam or junk folder, please mark them as <span className="font-semibold text-[#064E3B]">“Not Spam”</span> to ensure you receive future restitution updates.
+        </motion.p>
 
         {/* Active Votes Notifications */}
         {activeVotes && activeVotes.length > 0 && (
-          <div className="mb-6 space-y-4 px-4 sm:px-6">
+          <div className="space-y-4">
             {activeVotes.map((vote) => (
               <motion.div
                 key={vote._id || vote.id || Math.random()}
-                initial={{ opacity: 0, x: -50 }}
-                animate={{ opacity: 1, x: 0 }}
-                className="bg-[#031d24]/90 rounded-xl shadow-lg border-l-4 border-cyan-500 overflow-hidden flex flex-col md:flex-row items-center justify-between p-4 border border-cyan-500/20 shadow-cyan-950/40"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="rounded-[8px] sm:rounded-[10px] bg-[#FFFDF9] border border-[#064E3B]/20 p-5 text-[#064E3B] shadow-[0_8px_30px_rgba(6,78,59,0.06)] flex flex-col md:flex-row items-center justify-between gap-4"
               >
-                <div className="flex items-center gap-4 mb-4 md:mb-0 w-full md:w-auto">
-                  <div className="p-3 bg-cyan-950/60 text-cyan-300 rounded-full shrink-0 border border-cyan-500/30">
+                <div className="flex items-center gap-4 w-full md:w-auto">
+                  <div className="p-3 bg-[#064E3B]/[0.08] text-[#064E3B] rounded-[8px] shrink-0 border border-[#064E3B]/15">
                     <Vote className="w-6 h-6" />
                   </div>
                   <div className="flex-1">
-                    <h4 className="text-lg font-bold text-white">{vote.title || 'New Vote Created!'}</h4>
-                    <p className="text-sm text-cyan-200/70">A new proposal needs your attention</p>
+                    <h4 className="font-editorial text-xl font-normal text-[#064E3B]">{vote.title || 'New Vote Created!'}</h4>
+                    <p className="text-sm text-[#064E3B]/70 font-sans">A new proposal needs your attention</p>
                   </div>
                 </div>
 
                 <div className="flex flex-col sm:flex-row items-center gap-4 w-full md:w-auto justify-between">
-                  <div className="text-sm flex flex-col gap-1 items-start md:items-end w-full sm:w-auto">
-                    <div className="flex items-center gap-2 text-cyan-200">
-                      <Clock className="w-4 h-4 text-cyan-400" />
+                  <div className="text-xs sm:text-sm font-sans flex flex-col gap-1 items-start md:items-end w-full sm:w-auto text-[#064E3B]/75">
+                    <div className="flex items-center gap-2">
+                      <Clock className="w-4 h-4 text-[#064E3B]" />
                       <span>Starts: {vote.startTime ? new Date(vote.startTime).toLocaleString() : 'Now'}</span>
                     </div>
                     {vote.endTime && (
-                      <div className="flex items-center gap-2 text-cyan-200">
-                        <Timer className="w-4 h-4 text-cyan-400" />
+                      <div className="flex items-center gap-2">
+                        <Timer className="w-4 h-4 text-[#064E3B]" />
                         <span>Ends: {new Date(vote.endTime).toLocaleString()}</span>
-                        <span className="ml-2 font-mono font-bold text-red-400 bg-red-950/60 px-2 py-0.5 rounded-full border border-red-500/30">
+                        <span className="ml-2 font-mono font-bold text-[#064E3B] bg-[#064E3B]/10 px-2 py-0.5 rounded-full border border-[#064E3B]/20">
                           <LiveTimer endTime={vote.endTime} />
                         </span>
                       </div>
@@ -446,297 +356,232 @@ const Dashboard = () => {
 
                   <button
                     onClick={() => navigate(`/voting?voteId=${vote._id || vote.id}`)}
-                    className="px-6 py-2 bg-gradient-to-r from-[#086a7e] to-[#0e7490] text-white rounded-lg hover:from-[#097d95] hover:to-[#0891b2] transition-all font-medium flex items-center justify-center gap-2 shrink-0 w-full sm:w-auto shadow-md shadow-cyan-950/50"
+                    className="px-5 py-2.5 bg-[#064E3B] hover:bg-[#043C2D] text-[#F8E7C9] rounded-[8px] font-semibold text-sm transition-all flex items-center justify-center gap-2 shrink-0 w-full sm:w-auto shadow-sm active:scale-95 cursor-pointer"
                   >
-                    Vote Now <Vote className="w-4 h-4" />
+                    <span>Vote Now</span>
+                    <Vote className="w-4 h-4" />
                   </button>
                 </div>
               </motion.div>
             ))}
           </div>
         )}
-      </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-
-
-        {/* Main Action Buttons */}
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 responsive-gap mb-6 sm:mb-8">
+        {/* 4 Cards in 1 Line: Vote, Verified Loss, Unverified Loss, Amount Restituted */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6">
+          {/* 1. Vote Card */}
           <motion.button
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1.5, ease: "easeOut" }}
             onClick={() => navigate('/voting')}
-            className="mobile-glass rounded-xl mobile-card hover:bg-cyan-950/40 border border-cyan-500/20 transition-all duration-300 group touch-target"
+            className="rounded-[8px] sm:rounded-[10px] bg-[#FFFDF9] border border-[#064E3B]/15 p-5 sm:p-6 text-[#064E3B] shadow-[0_8px_30px_rgba(6,78,59,0.06)] hover:border-[#064E3B]/35 hover:shadow-[0_12px_40px_rgba(6,78,59,0.1)] transition-all duration-[1500ms] ease-out text-left group cursor-pointer flex flex-col justify-between"
           >
-            <div className="flex flex-col sm:flex-row items-center justify-between">
-              <div className="flex items-center mb-4 sm:mb-0">
-                <div className="p-3 sm:p-4 bg-cyan-500/20 border border-cyan-500/30 rounded-lg mr-4 shadow-sm shadow-cyan-500/20">
-                  <Vote className="w-6 h-6 sm:w-8 sm:h-8 text-cyan-300" />
-                </div>
-                <div className="text-left">
-                  <h3 className="text-lg sm:text-xl font-bold text-white">VOTE</h3>
-                  <p className="text-gray-300 text-sm sm:text-base">Provide feedback on refunds and vote on decisions.</p>
-                </div>
+            <div className="flex items-center justify-between mb-2">
+              <h4 className="text-[11px] font-bold text-[#064E3B]/60 uppercase tracking-wider font-sans">
+                Voting Status
+              </h4>
+              <span className="text-[10px] font-bold text-[#064E3B] bg-[#064E3B]/[0.08] border border-[#064E3B]/15 px-2 py-0.5 rounded-[4px] font-sans">
+                Rounds: {activeRoundsCount}
+              </span>
+            </div>
+            <div className="flex items-center gap-3 my-1">
+              <div className="p-2 sm:p-2.5 bg-[#064E3B]/[0.08] border border-[#064E3B]/15 rounded-[8px] text-[#064E3B] group-hover:bg-[#064E3B] group-hover:text-[#F8E7C9] transition-colors duration-[1500ms]">
+                <Vote className="w-5 h-5 sm:w-6 sm:h-6" />
               </div>
-              <div className="text-center sm:text-right">
-                <div className="text-cyan-300 font-semibold text-sm sm:text-base">
-                  Active rounds: {activeRoundsCount}
-                </div>
-                <p className="text-gray-400 text-xs sm:text-sm">Voting status</p>
+              <div className="font-editorial text-2xl sm:text-3xl font-normal text-[#064E3B] group-hover:text-[#043C2D]">
+                VOTE
               </div>
             </div>
+            <p className="text-[#064E3B]/60 text-xs font-sans mt-1">
+              Provide feedback & vote
+            </p>
           </motion.button>
+
+          {/* 2. Verified Loss Card */}
+          <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1.5, ease: "easeOut", delay: 0.1 }}
+            className="rounded-[8px] sm:rounded-[10px] bg-[#FFFDF9] border border-[#064E3B]/15 p-5 sm:p-6 text-[#064E3B] shadow-[0_8px_30px_rgba(6,78,59,0.06)] hover:border-[#064E3B]/35 hover:shadow-[0_12px_40px_rgba(6,78,59,0.1)] transition-all duration-[1500ms] ease-out flex flex-col justify-between"
+          >
+            <div className="flex items-center justify-between mb-2">
+              <h4 className="text-[11px] font-bold text-[#064E3B]/60 uppercase tracking-wider font-sans">
+                Verified Loss
+              </h4>
+              <span className="text-[10px] font-bold text-emerald-700 bg-emerald-500/[0.1] border border-emerald-600/20 px-2 py-0.5 rounded-[4px] font-sans">
+                Verified
+              </span>
+            </div>
+            <div className="font-editorial text-2xl sm:text-3xl font-normal text-[#064E3B] my-1">
+              ${verifiedLoss.toLocaleString()}
+            </div>
+            <p className="text-[#064E3B]/60 text-xs font-sans mt-1">
+              Protocol verified claims
+            </p>
+          </motion.div>
+
+          {/* 3. Unverified Loss Card */}
+          <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1.5, ease: "easeOut", delay: 0.2 }}
+            className="rounded-[8px] sm:rounded-[10px] bg-[#FFFDF9] border border-[#064E3B]/15 p-5 sm:p-6 text-[#064E3B] shadow-[0_8px_30px_rgba(6,78,59,0.06)] hover:border-[#064E3B]/35 hover:shadow-[0_12px_40px_rgba(6,78,59,0.1)] transition-all duration-[1500ms] ease-out flex flex-col justify-between"
+          >
+            <div className="flex items-center justify-between mb-2">
+              <h4 className="text-[11px] font-bold text-[#064E3B]/60 uppercase tracking-wider font-sans">
+                Unverified Loss
+              </h4>
+              <span className="text-[10px] font-bold text-amber-700 bg-amber-500/[0.1] border border-amber-600/20 px-2 py-0.5 rounded-[4px] font-sans">
+                Pending
+              </span>
+            </div>
+            <div className="font-editorial text-2xl sm:text-3xl font-normal text-[#064E3B] my-1">
+              ${unverifiedLoss.toLocaleString()}
+            </div>
+            <p className="text-[#064E3B]/60 text-xs font-sans mt-1">
+              Under protocol review
+            </p>
+          </motion.div>
+
+          {/* 4. Amount Restituted Card */}
+          <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1.5, ease: "easeOut", delay: 0.3 }}
+            className="rounded-[8px] sm:rounded-[10px] bg-[#FFFDF9] border border-[#064E3B]/15 p-5 sm:p-6 text-[#064E3B] shadow-[0_8px_30px_rgba(6,78,59,0.06)] hover:border-[#064E3B]/35 hover:shadow-[0_12px_40px_rgba(6,78,59,0.1)] transition-all duration-[1500ms] ease-out flex flex-col justify-between"
+          >
+            <div className="flex items-center justify-between mb-2">
+              <h4 className="text-[11px] font-bold text-[#064E3B]/70 uppercase tracking-wider font-sans">
+                Amount Restituted
+              </h4>
+              <span className="text-[10px] font-bold text-[#064E3B] bg-[#064E3B]/[0.08] border border-[#064E3B]/15 px-2 py-0.5 rounded-[4px] font-sans">
+                Restored
+              </span>
+            </div>
+            <div className="font-editorial text-2xl sm:text-3xl font-normal text-[#064E3B] my-1">
+              ${amountRestituted.toLocaleString()}
+            </div>
+            <p className="text-[#064E3B]/60 text-xs font-sans mt-1">
+              Total compensation paid
+            </p>
+          </motion.div>
         </div>
-
-
-
-
-
-        {/* Loss & Restitution Stats */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="mobile-glass rounded-xl mobile-card mb-6 sm:mb-8"
-        >
-          <h3 className="mobile-subheader font-bold text-white mb-4 sm:mb-6">Restitution Status</h3>
-          <div className="grid grid-cols-1 sm:grid-cols-3 responsive-gap">
-            <div className="bg-white/10 rounded-lg p-4">
-              <h4 className="text-white font-semibold mb-2 text-sm sm:text-base">Verified Loss</h4>
-              <div className="text-2xl font-bold text-white">
-                ${verifiedLoss.toLocaleString()}
-              </div>
-            </div>
-            <div className="bg-white/10 rounded-lg p-4">
-              <h4 className="text-white font-semibold mb-2 text-sm sm:text-base">Unverified Loss</h4>
-              <div className="text-2xl font-bold text-white">
-                ${unverifiedLoss.toLocaleString()}
-              </div>
-            </div>
-            <div className="bg-white/10 rounded-lg p-4">
-              <h4 className="text-white font-semibold mb-2 text-sm sm:text-base">Amount Restituted</h4>
-              <div className="text-2xl font-bold text-green-400">
-                ${amountRestituted.toLocaleString()}
-              </div>
-            </div>
-          </div>
-        </motion.div>
 
         {/* Your Stats & Activity (Live) */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
-          className="mobile-glass rounded-xl mobile-card mb-6 sm:mb-8"
+          className="rounded-[8px] sm:rounded-[10px] bg-[#FFFDF9] border border-[#064E3B]/15 p-6 sm:p-8 text-[#064E3B] shadow-[0_12px_40px_rgba(6,78,59,0.08)]"
         >
-          <h3 className="mobile-subheader font-bold text-white mb-4 sm:mb-6">Your Stats</h3>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 responsive-gap mb-6">
-            <div className={`rounded-lg p-4 transition-all duration-300 ${userRank >= 5000 && userRank <= 5009 ? 'bg-gradient-to-br from-yellow-500/30 to-yellow-600/30 border border-yellow-400/50' : 'bg-white/10'}`}>
+          <div className="pb-4 border-b border-[#064E3B]/10 min-h-[44px] flex items-center justify-between">
+            <h3 className="font-editorial text-2xl sm:text-3xl font-normal text-[#064E3B]">
+              Your Stats
+            </h3>
+            <span className="text-xs font-bold uppercase tracking-wider text-[#064E3B]/60 font-sans hidden sm:inline-block">
+              Live Metrics
+            </span>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 pt-6 mb-8">
+            {/* Leaderboard Ranking */}
+            <div className={`rounded-[8px] p-5 transition-all duration-300 border ${
+              userRank >= 5000 && userRank <= 5009 
+                ? 'bg-[#064E3B]/[0.08] border-[#064E3B]/30' 
+                : 'bg-[#064E3B]/[0.03] border-[#064E3B]/10'
+            }`}>
               <div className="flex items-center justify-between mb-2">
-                <h4 className="text-white font-semibold text-sm sm:text-base">Leaderboard Ranking</h4>
-                <Trophy className={`w-5 h-5 ${userRank >= 5000 && userRank <= 5009 ? 'text-yellow-400' : 'text-purple-400'}`} />
+                <h4 className="text-[11px] font-bold text-[#064E3B]/60 uppercase tracking-wider font-sans">Leaderboard Ranking</h4>
+                <Trophy className="w-5 h-5 text-[#064E3B]" />
               </div>
               <div className="flex items-baseline gap-2">
-                <span className="text-3xl font-bold text-white">#{userRank || '—'}</span>
-                {userRank >= 5000 && userRank <= 5009 && <span className="text-xs text-yellow-400 font-bold uppercase tracking-wider">Top Tier</span>}
+                <span className="font-editorial text-3xl font-normal text-[#064E3B]">#{userRank || '—'}</span>
+                {userRank >= 5000 && userRank <= 5009 && (
+                  <span className="text-[10px] font-bold text-[#064E3B] bg-[#064E3B]/10 border border-[#064E3B]/20 px-2 py-0.5 rounded-full uppercase tracking-wider font-sans">
+                    Top Tier
+                  </span>
+                )}
               </div>
-              <p className="text-gray-400 text-xs mt-1">Global standing in the ecosystem</p>
+              <p className="text-[#064E3B]/60 text-xs mt-1.5 font-sans">Global standing in the ecosystem</p>
             </div>
-            <div className="bg-white/10 rounded-lg p-4">
-              <h4 className="text-white font-semibold mb-2 text-sm sm:text-base">Voting Rights</h4>
-              <div className="space-y-2">
+
+            {/* Voting Rights */}
+            <div className="rounded-[8px] bg-[#064E3B]/[0.03] border border-[#064E3B]/10 p-5">
+              <h4 className="text-[11px] font-bold text-[#064E3B]/60 uppercase tracking-wider mb-2 font-sans">Voting Rights</h4>
+              <div className="space-y-2 font-sans text-sm">
                 <div className="flex justify-between">
-                  <span className="text-gray-300 text-sm">Allowed:</span>
-                  <span className="text-white font-semibold">{dashAllowed}</span>
+                  <span className="text-[#064E3B]/70">Allowed:</span>
+                  <span className="font-semibold text-[#064E3B]">{dashAllowed}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-300 text-sm">Used:</span>
-                  <span className="text-white font-semibold">{dashUsed}</span>
+                  <span className="text-[#064E3B]/70">Used:</span>
+                  <span className="font-semibold text-[#064E3B]">{dashUsed}</span>
                 </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-300 text-sm">Remaining:</span>
-                  <span className="text-green-400 font-semibold">{dashRemaining}</span>
-                </div>
-              </div>
-            </div>
-            <div className="bg-white/10 rounded-lg p-4">
-              <h4 className="text-white font-semibold mb-2 text-sm sm:text-base">Voting Rounds</h4>
-              <div className="space-y-2">
-                <div className="flex justify-between">
-                  <span className="text-gray-300 text-sm">Active Rounds:</span>
-                  <span className="text-white font-semibold">{activeRoundsCount}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-300 text-sm">Total Points:</span>
-                  <span className="text-green-400 font-semibold">{totalPoints.toLocaleString()}</span>
+                <div className="flex justify-between pt-1 border-t border-[#064E3B]/10">
+                  <span className="text-[#064E3B]/70">Remaining:</span>
+                  <span className="font-bold text-[#064E3B]">{dashRemaining}</span>
                 </div>
               </div>
             </div>
-            <div className="bg-emerald-950/40 border border-emerald-500/30 rounded-lg p-4">
+
+            {/* Voting Rounds */}
+            <div className="rounded-[8px] bg-[#064E3B]/[0.03] border border-[#064E3B]/10 p-5">
+              <h4 className="text-[11px] font-bold text-[#064E3B]/60 uppercase tracking-wider mb-2 font-sans">Voting Rounds</h4>
+              <div className="space-y-2 font-sans text-sm">
+                <div className="flex justify-between">
+                  <span className="text-[#064E3B]/70">Active Rounds:</span>
+                  <span className="font-semibold text-[#064E3B]">{activeRoundsCount}</span>
+                </div>
+                <div className="flex justify-between pt-1 border-t border-[#064E3B]/10">
+                  <span className="text-[#064E3B]/70">Total Points:</span>
+                  <span className="font-bold text-[#064E3B]">{totalPoints.toLocaleString()}</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Referral Points */}
+            <div className="rounded-[8px] bg-[#064E3B]/[0.05] border border-[#064E3B]/15 p-5">
               <div className="flex items-center justify-between mb-2">
-                <h4 className="text-white font-semibold text-sm sm:text-base">Referral Points</h4>
-                <Users className="w-5 h-5 text-emerald-400" />
+                <h4 className="text-[11px] font-bold text-[#064E3B]/70 uppercase tracking-wider font-sans">Referral Points</h4>
+                <Users className="w-5 h-5 text-[#064E3B]" />
               </div>
               <div className="space-y-1">
-                <div className="text-3xl font-bold text-emerald-400">{pointsReferral.toLocaleString()}</div>
-                <p className="text-emerald-200/70 text-xs">Real points from invited users (+10 each)</p>
+                <div className="font-editorial text-3xl font-normal text-[#064E3B]">{pointsReferral.toLocaleString()}</div>
+                <p className="text-[#064E3B]/60 text-xs font-sans">Real points from invited users (+10 each)</p>
               </div>
             </div>
           </div>
-          <h4 className="text-white font-semibold mb-3 text-sm sm:text-base">Your Recent Activity</h4>
 
-          <div className="space-y-2 max-h-40 overflow-y-auto">
-            {recentActivity.length === 0 ? (
-              <div className="bg-white/10 rounded-lg p-3">
-                <p className="text-gray-300 text-sm">No recent activity.</p>
-              </div>
-            ) : (
-              recentActivity.map((activity) => (
-                <div key={activity.id} className="bg-white/10 rounded-lg p-3">
-                  <div className="flex justify-between items-center">
-                    <span className="text-white text-sm font-medium">{activity.message}</span>
-                    <span className="text-gray-400 text-xs">{new Date(activity.time).toLocaleTimeString()}</span>
+          {/* Recent Activity */}
+          <div className="pt-2">
+            <h4 className="font-editorial text-xl sm:text-2xl font-normal text-[#064E3B] mb-3">
+              Your Recent Activity
+            </h4>
+
+            <div className="space-y-2.5 max-h-52 overflow-y-auto pr-1">
+              {recentActivity.length === 0 ? (
+                <div className="rounded-[8px] bg-[#064E3B]/[0.02] border border-[#064E3B]/10 p-4 text-center">
+                  <p className="text-[#064E3B]/60 text-sm font-sans">No recent activity logged yet.</p>
+                </div>
+              ) : (
+                recentActivity.map((activity) => (
+                  <div key={activity.id} className="rounded-[8px] bg-[#064E3B]/[0.02] border border-[#064E3B]/10 p-3.5 flex justify-between items-center font-sans">
+                    <div>
+                      <span className="text-sm font-semibold text-[#064E3B] block">{activity.message}</span>
+                      <span className="text-xs text-[#064E3B]/60 capitalize">{activity.type}</span>
+                    </div>
+                    <span className="text-xs text-[#064E3B]/50 font-mono">{new Date(activity.time).toLocaleTimeString()}</span>
                   </div>
-                  <p className="text-gray-400 text-xs">{activity.type}</p>
-                </div>
-              ))
-            )}
-          </div>
-        </motion.div>
-
-        {/* Settings Panel */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="mobile-glass rounded-xl mobile-card"
-        >
-          <h3 className="mobile-subheader font-bold text-white mb-4 sm:mb-6">Settings</h3>
-          <div className="grid grid-cols-1 sm:grid-cols-3 responsive-gap">
-            <button onClick={handleEditProfile} className="flex items-center p-4 bg-white/10 rounded-lg hover:bg-white/20 transition-colors group touch-target">
-              <User className="w-5 h-5 text-blue-400 mr-3 group-hover:scale-110 transition-transform" />
-              <div className="text-left">
-                <h4 className="text-white font-semibold text-sm sm:text-base">Edit Profile</h4>
-                <p className="text-gray-400 text-xs sm:text-sm">Update your information</p>
-              </div>
-            </button>
-            <button onClick={openResetPassword} className="flex items-center p-4 bg-white/10 rounded-lg hover:bg-white/20 transition-colors group touch-target">
-              <Lock className="w-5 h-5 text-yellow-400 mr-3 group-hover:scale-110 transition-transform" />
-              <div className="text-left">
-                <h4 className="text-white font-semibold text-sm sm:text-base">Reset Password</h4>
-                <p className="text-gray-400 text-xs sm:text-sm">Change your password</p>
-              </div>
-            </button>
-            <button
-              onClick={logout}
-              className="flex items-center p-4 bg-white/10 rounded-lg hover:bg-red-500/20 transition-colors group touch-target"
-            >
-              <LogOut className="w-5 h-5 text-red-400 mr-3 group-hover:scale-110 transition-transform" />
-              <div className="text-left">
-                <h4 className="text-white font-semibold text-sm sm:text-base">Log Out</h4>
-                <p className="text-gray-400 text-xs sm:text-sm">End your session</p>
-              </div>
-            </button>
-          </div>
-        </motion.div>
-      </div>
-
-      {showResetPassword && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="bg-gray-800 rounded-lg p-8 w-full max-w-md"
-          >
-            <h2 className="text-2xl font-bold text-white mb-4">Reset Password</h2>
-            <div className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">Email</label>
-                <input
-                  type="email"
-                  value={resetEmail}
-                  onChange={(e) => setResetEmail(e.target.value)}
-                  className="input-field bg-white/10 border-white/20 text-white"
-                  placeholder="Enter your email"
-                />
-              </div>
-              <div className="flex items-center gap-3">
-                <button
-                  type="button"
-                  onClick={dashSendOtp}
-                  disabled={sendingOtp}
-                  className="px-4 py-2 rounded-md bg-purple-600 text-white hover:bg-purple-700 disabled:opacity-50"
-                >
-                  {sendingOtp ? 'Sending...' : 'Send OTP'}
-                </button>
-                <input
-                  type="text"
-                  value={otpCode}
-                  onChange={(e) => setOtpCode(e.target.value)}
-                  className="input-field flex-1 bg-white/10 border-white/20 text-white"
-                  placeholder="Enter OTP"
-                />
-              </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <div className="relative">
-                  <input
-                    type={showNewPass ? 'text' : 'password'}
-                    value={newPass}
-                    onChange={(e) => setNewPass(e.target.value)}
-                    className="input-field bg-white/10 border-white/20 text-white pr-10"
-                    placeholder="New password"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowNewPass(!showNewPass)}
-                    className="absolute inset-y-0 right-0 pr-3 flex items-center"
-                  >
-                    {showNewPass ? (
-                      <EyeOff className="h-5 w-5 text-gray-400 hover:text-gray-300" />
-                    ) : (
-                      <Eye className="h-5 w-5 text-gray-400 hover:text-gray-300" />
-                    )}
-                  </button>
-                </div>
-                <div className="relative">
-                  <input
-                    type={showConfirmPass ? 'text' : 'password'}
-                    value={confirmPass}
-                    onChange={(e) => setConfirmPass(e.target.value)}
-                    className="input-field bg-white/10 border-white/20 text-white pr-10"
-                    placeholder="Confirm password"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowConfirmPass(!showConfirmPass)}
-                    className="absolute inset-y-0 right-0 pr-3 flex items-center"
-                  >
-                    {showConfirmPass ? (
-                      <EyeOff className="h-5 w-5 text-gray-400 hover:text-gray-300" />
-                    ) : (
-                      <Eye className="h-5 w-5 text-gray-400 hover:text-gray-300" />
-                    )}
-                  </button>
-                </div>
-              </div>
-              <button
-                type="button"
-                onClick={dashChangePasswordWithOtp}
-                disabled={changingPwd}
-                className="w-full btn-primary py-2 disabled:opacity-50"
-              >
-                {changingPwd ? 'Changing...' : 'Change Password'}
-              </button>
-              <button
-                onClick={() => setShowResetPassword(false)}
-                className="mt-4 text-sm text-gray-400 hover:text-white"
-              >
-                Cancel
-              </button>
+                ))
+              )}
             </div>
-          </motion.div>
-        </div>
-      )}
+          </div>
+        </motion.div>
+
+      </div>
     </div>
   );
 };
 
 export default Dashboard;
+

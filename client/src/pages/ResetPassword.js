@@ -3,7 +3,8 @@ import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { motion } from 'framer-motion';
 import toast from 'react-hot-toast';
-import { Eye, EyeOff } from 'lucide-react';
+import { Eye, EyeOff, Lock, ArrowLeft } from 'lucide-react';
+import HeroGridBoxesAnimation from '../components/HeroGridBoxesAnimation';
 
 const ResetPassword = () => {
   const { token } = useParams();
@@ -25,33 +26,55 @@ const ResetPassword = () => {
     if (formData.password !== formData.passwordConfirm) {
       return toast.error('Passwords do not match');
     }
+    if (formData.password.length < 8) {
+      return toast.error('Password must be at least 8 characters');
+    }
     setLoading(true);
     try {
       const res = await axios.post(`/api/password/reset/${token}`, {
         password: formData.password,
         passwordConfirm: formData.passwordConfirm,
       });
-      toast.success(res.data.message);
+      toast.success(res.data.message || 'Password reset successfully');
       navigate('/login');
     } catch (error) {
-      toast.error(error.response.data.message || 'An error occurred');
+      toast.error(error.response?.data?.message || 'An error occurred');
     }
     setLoading(false);
   };
 
   return (
-    <div className="min-h-screen hero-gradient flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-       <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
-        className="relative max-w-md w-full space-y-8"
-      >
-        <div className="glass-effect rounded-2xl p-8 shadow-2xl">
-          <h2 className="text-3xl font-bold text-white mb-2 text-center">Reset Password</h2>
-          <form onSubmit={handleSubmit} className="space-y-6">
+    <div className="relative w-full min-h-[calc(100vh-4rem)] bg-[#F8E7C9] text-[#064E3B] flex items-center justify-center p-4 sm:p-6 overflow-hidden">
+      {/* Background Animated Grid Texture */}
+      <HeroGridBoxesAnimation />
+
+      <div className="relative z-10 max-w-md w-full">
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1.5, ease: 'easeOut' }}
+          className="rounded-[10px] bg-[#FFFDF9] border border-[#064E3B]/15 p-6 sm:p-8 text-[#064E3B] shadow-[0_16px_50px_rgba(6,78,59,0.08)] space-y-6"
+        >
+          {/* Header */}
+          <div className="pb-4 border-b border-[#064E3B]/10 flex items-center gap-3">
+            <div className="p-2.5 rounded-[8px] bg-[#064E3B]/[0.08] text-[#064E3B] border border-[#064E3B]/15 shrink-0">
+              <Lock className="w-5 h-5 text-[#064E3B]" />
+            </div>
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-300 mb-2">New Password</label>
+              <h2 className="font-editorial text-2xl sm:text-3xl font-normal text-[#064E3B] leading-tight">
+                Reset Password
+              </h2>
+              <p className="text-xs text-[#064E3B]/60 font-sans mt-0.5">
+                Enter your new account password below
+              </p>
+            </div>
+          </div>
+
+          <form onSubmit={handleSubmit} className="space-y-4 font-sans">
+            <div>
+              <label htmlFor="password" className="block text-xs sm:text-sm font-semibold text-[#064E3B] mb-1.5">
+                New Password
+              </label>
               <div className="relative">
                 <input
                   type={showPassword ? 'text' : 'password'}
@@ -60,16 +83,23 @@ const ResetPassword = () => {
                   value={formData.password}
                   onChange={handleChange}
                   required
-                  className="input-field pl-10 pr-10 bg-white/10 border-white/20 text-white placeholder-gray-400 focus:ring-purple-500"
+                  className="w-full px-4 py-2.5 bg-white border border-[#064E3B]/20 rounded-[8px] text-sm text-[#064E3B] placeholder-[#064E3B]/35 focus:outline-none focus:ring-2 focus:ring-[#064E3B]/25 focus:border-[#064E3B] pr-10 transition-all"
                   placeholder="Enter new password"
                 />
-                <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute inset-y-0 right-0 pr-3 flex items-center">
-                  {showPassword ? <EyeOff className="h-5 w-5 text-gray-400 hover:text-gray-300" /> : <Eye className="h-5 w-5 text-gray-400 hover:text-gray-300" />}
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute inset-y-0 right-0 pr-3 flex items-center text-[#064E3B]/50 hover:text-[#064E3B] cursor-pointer"
+                >
+                  {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                 </button>
               </div>
             </div>
+
             <div>
-              <label htmlFor="passwordConfirm" className="block text-sm font-medium text-gray-300 mb-2">Confirm New Password</label>
+              <label htmlFor="passwordConfirm" className="block text-xs sm:text-sm font-semibold text-[#064E3B] mb-1.5">
+                Confirm New Password
+              </label>
               <div className="relative">
                 <input
                   type={showConfirm ? 'text' : 'password'}
@@ -78,24 +108,42 @@ const ResetPassword = () => {
                   value={formData.passwordConfirm}
                   onChange={handleChange}
                   required
-                  className="input-field pl-10 pr-10 bg-white/10 border-white/20 text-white placeholder-gray-400 focus:ring-purple-500"
+                  className="w-full px-4 py-2.5 bg-white border border-[#064E3B]/20 rounded-[8px] text-sm text-[#064E3B] placeholder-[#064E3B]/35 focus:outline-none focus:ring-2 focus:ring-[#064E3B]/25 focus:border-[#064E3B] pr-10 transition-all"
                   placeholder="Confirm new password"
                 />
-                <button type="button" onClick={() => setShowConfirm(!showConfirm)} className="absolute inset-y-0 right-0 pr-3 flex items-center">
-                  {showConfirm ? <EyeOff className="h-5 w-5 text-gray-400 hover:text-gray-300" /> : <Eye className="h-5 w-5 text-gray-400 hover:text-gray-300" />}
+                <button
+                  type="button"
+                  onClick={() => setShowConfirm(!showConfirm)}
+                  className="absolute inset-y-0 right-0 pr-3 flex items-center text-[#064E3B]/50 hover:text-[#064E3B] cursor-pointer"
+                >
+                  {showConfirm ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                 </button>
               </div>
             </div>
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full btn-primary py-3 text-lg font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {loading ? 'Resetting...' : 'Reset Password'}
-            </button>
+
+            <div className="pt-2">
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full py-2.5 bg-[#064E3B] hover:bg-[#043C2D] text-[#F8E7C9] font-semibold text-sm rounded-[8px] border border-[#043C2D] shadow-sm transition-all disabled:opacity-50 cursor-pointer"
+              >
+                {loading ? 'Resetting...' : 'Reset Password'}
+              </button>
+            </div>
+
+            <div className="text-center pt-1">
+              <button
+                type="button"
+                onClick={() => navigate('/login')}
+                className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#064E3B]/70 hover:text-[#064E3B] transition-colors cursor-pointer"
+              >
+                <ArrowLeft className="w-3.5 h-3.5" />
+                <span>Back to Login</span>
+              </button>
+            </div>
           </form>
-        </div>
-      </motion.div>
+        </motion.div>
+      </div>
     </div>
   );
 };

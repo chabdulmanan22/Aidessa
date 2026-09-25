@@ -3,6 +3,29 @@ import { motion } from 'framer-motion';
 import { Mail, MapPin, Send, MessageSquare, CheckCircle2, AlertCircle } from 'lucide-react';
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import HeroGridBoxesAnimation from '../components/HeroGridBoxesAnimation';
+
+const WhatsAppIcon = ({ className = "w-5 h-5" }) => (
+  <svg className={className} viewBox="0 0 175.216 175.552" fill="none" xmlns="http://www.w3.org/2000/svg">
+    {/* White outer halo/speech-bubble border */}
+    <path
+      fill="#FFFFFF"
+      d="m12.966 161.238 10.439-38.114a73.42 73.42 0 0 1-9.821-36.772c.017-40.556 33.021-73.55 73.578-73.55 19.681.01 38.154 7.669 52.047 21.572s21.537 32.383 21.53 52.037c-.018 40.553-33.027 73.553-73.578 73.553h-.032c-12.313-.005-24.412-3.094-35.159-8.954z"
+    />
+    {/* Official WhatsApp Green speech bubble */}
+    <path
+      fill="#25D366"
+      d="M87.184 25.227c-33.733 0-61.166 27.423-61.178 61.13a60.98 60.98 0 0 0 9.349 32.535l1.455 2.313-6.179 22.558 23.146-6.069 2.235 1.324c9.387 5.571 20.15 8.517 31.126 8.523h.023c33.707 0 61.14-27.426 61.153-61.135a60.75 60.75 0 0 0-17.895-43.251 60.75 60.75 0 0 0-43.235-17.928z"
+    />
+    {/* Solid White Telephone Handset */}
+    <path
+      fill="#FFFFFF"
+      fillRule="evenodd"
+      clipRule="evenodd"
+      d="M68.772 55.603c-1.378-3.061-2.828-3.123-4.137-3.176l-3.524-.043c-1.226 0-3.218.46-4.902 2.3s-6.435 6.287-6.435 15.332 6.588 17.785 7.506 19.013 12.718 20.381 31.405 27.75c15.529 6.124 18.689 4.906 22.061 4.6s10.877-4.447 12.408-8.74 1.532-7.971 1.073-8.74-1.685-1.226-3.525-2.146-10.877-5.367-12.562-5.981-2.91-.919-4.137.921-4.746 5.979-5.819 7.206-2.144 1.381-3.984.462-7.76-2.861-14.784-9.124c-5.465-4.873-9.154-10.891-10.228-12.73s-.114-2.835.808-3.751c.825-.824 1.838-2.147 2.759-3.22s1.224-1.84 1.836-3.065.307-2.301-.153-3.22-4.032-10.011-5.666-13.647"
+    />
+  </svg>
+);
 
 const ContactUs = () => {
   const [form, setForm] = useState({
@@ -60,192 +83,210 @@ const ContactUs = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 py-12 md:py-16">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+    <div className="relative w-full min-h-[calc(100vh-4rem)] bg-[#F8E7C9] text-[#064E3B] py-12 md:py-16 overflow-hidden">
+      {/* Persistent Animated Grid Texture */}
+      <HeroGridBoxesAnimation />
+
+      <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10 sm:space-y-12">
         {/* Page Header */}
-        <div className="text-center space-y-4 max-w-3xl mx-auto">
-          <span className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/15 border border-white/30 text-white text-xs md:text-sm font-bold tracking-wider uppercase backdrop-blur-md shadow-xs">
-            <Mail className="w-3.5 h-3.5 text-white" />
-            Direct Support
-          </span>
-          <h1 className="text-3xl md:text-5xl font-black text-white tracking-tight">
+        <div className="text-center space-y-3 max-w-3xl mx-auto">
+          <h1 className="font-editorial text-3xl md:text-5xl font-normal text-[#064E3B] tracking-[-0.02em] leading-tight">
             Contact Aidessa Support
           </h1>
-          <p className="text-sky-100 text-base md:text-lg leading-relaxed">
+          <p className="text-[#064E3B]/75 text-sm sm:text-base md:text-lg leading-relaxed font-sans">
             Have questions about refund programs, claims, or protocol verification? Send us a message and our support team will get back to you promptly.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          {/* Contact Info Cards */}
-          <div className="lg:col-span-4 space-y-6">
-            <div className="bg-slate-900/80 border border-slate-800 rounded-2xl p-6 space-y-6 shadow-xl backdrop-blur-sm">
-              <h3 className="text-lg font-bold text-white pb-3 border-b border-slate-800 flex items-center gap-2">
-                <MessageSquare className="w-5 h-5 text-[#06b6d4]" />
-                Contact Information
-              </h3>
-
-              <div className="space-y-4">
-                <div className="flex items-start gap-4 p-3.5 rounded-xl bg-slate-800/40 border border-slate-800">
-                  <div className="p-2.5 rounded-lg bg-[#085464] text-cyan-300 shrink-0">
-                    <Mail className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider">Direct Email</h4>
-                    <a
-                      href="mailto:support@veritasaid.com"
-                      className="text-sm font-semibold text-cyan-300 hover:text-cyan-200 break-all transition-colors"
-                    >
-                      support@veritasaid.com
-                    </a>
-                  </div>
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+          {/* Contact Info Card (Left) */}
+          <div className="lg:col-span-4 flex flex-col">
+            <div className="flex-1 flex flex-col justify-between rounded-[8px] sm:rounded-[10px] bg-[#FFFDF9] border border-[#064E3B]/15 p-6 sm:p-8 text-[#064E3B] shadow-[0_12px_40px_rgba(6,78,59,0.08)]">
+              <div>
+                {/* Aligned Header Line */}
+                <div className="flex items-center justify-between pb-4 border-b border-[#064E3B]/10 min-h-[44px]">
+                  <h3 className="font-editorial text-2xl sm:text-3xl font-normal text-[#064E3B] flex items-center gap-2.5">
+                    <MessageSquare className="w-5 h-5 text-[#064E3B]" strokeWidth={1.8} />
+                    <span>Contact Information</span>
+                  </h3>
                 </div>
 
-                <div className="flex items-start gap-4 p-3.5 rounded-xl bg-slate-800/40 border border-slate-800">
-                  <div className="p-2.5 rounded-lg bg-[#085464] text-cyan-300 shrink-0">
-                    <MapPin className="w-5 h-5" />
+                {/* Unboxed Contact Info */}
+                <div className="space-y-6 pt-6">
+                  {/* Direct Email */}
+                  <div className="flex items-start gap-3.5">
+                    <div className="p-2 rounded-[8px] bg-[#064E3B]/[0.08] text-[#064E3B] border border-[#064E3B]/15 shrink-0 mt-0.5">
+                      <Mail className="w-4 h-4 sm:w-5 sm:h-5" />
+                    </div>
+                    <div>
+                      <h4 className="text-[11px] font-bold text-[#064E3B]/60 uppercase tracking-wider mb-0.5">Direct Email</h4>
+                      <a
+                        href="mailto:support@veritasaid.com"
+                        className="text-sm sm:text-base font-semibold text-[#064E3B] hover:underline underline-offset-2 break-all transition-colors font-sans"
+                      >
+                        support@veritasaid.com
+                      </a>
+                    </div>
                   </div>
-                  <div className="space-y-2">
-                    {companyAddress && (
-                      <div>
-                        <h4 className="text-xs font-bold text-emerald-400 uppercase tracking-wider">Administrative Office</h4>
-                        <p className="text-sm font-medium text-slate-200 leading-snug whitespace-pre-line">
-                          {companyAddress}
-                        </p>
-                      </div>
-                    )}
-                    {companyAddress2 && (
-                      <div className="pt-2 border-t border-slate-800">
-                        <h4 className="text-xs font-bold text-sky-400 uppercase tracking-wider">Registered Office</h4>
-                        <p className="text-sm font-medium text-slate-200 leading-snug whitespace-pre-line">
-                          {companyAddress2}
-                        </p>
-                      </div>
-                    )}
-                  </div>
-                </div>
 
-                <div className="flex items-start gap-4 p-3.5 rounded-xl bg-[#25D366]/10 border border-[#25D366]/30 shadow-md">
-                  <div className="p-2.5 rounded-lg bg-[#25D366]/20 text-[#25D366] shrink-0">
-                    <span className="text-xl">💬</span>
+                  {/* Administrative & Registered Office */}
+                  <div className="flex items-start gap-3.5">
+                    <div className="p-2 rounded-[8px] bg-[#064E3B]/[0.08] text-[#064E3B] border border-[#064E3B]/15 shrink-0 mt-0.5">
+                      <MapPin className="w-4 h-4 sm:w-5 sm:h-5" />
+                    </div>
+                    <div className="space-y-3">
+                      {companyAddress && (
+                        <div>
+                          <h4 className="text-[11px] font-bold text-[#064E3B]/60 uppercase tracking-wider mb-0.5">Administrative Office</h4>
+                          <p className="text-sm font-medium text-[#064E3B] leading-snug whitespace-pre-line font-sans">
+                            {companyAddress}
+                          </p>
+                        </div>
+                      )}
+                      {companyAddress2 && (
+                        <div className="pt-2 border-t border-[#064E3B]/10">
+                          <h4 className="text-[11px] font-bold text-[#064E3B]/60 uppercase tracking-wider mb-0.5">Registered Office</h4>
+                          <p className="text-sm font-medium text-[#064E3B] leading-snug whitespace-pre-line font-sans">
+                            {companyAddress2}
+                          </p>
+                        </div>
+                      )}
+                    </div>
                   </div>
-                  <div>
-                    <h4 className="text-xs font-bold text-[#25D366] uppercase tracking-wider">WhatsApp Support</h4>
+
+                  {/* WhatsApp Support */}
+                  <div className="flex items-start gap-3.5">
                     <a
                       href={whatsappLink}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-sm font-extrabold text-[#25D366] hover:text-[#20ba59] transition-colors underline underline-offset-2 flex items-center gap-1 mt-0.5"
+                      className="p-2 rounded-[8px] bg-[#25D366]/15 hover:bg-[#25D366]/25 border border-[#25D366]/30 shrink-0 mt-0.5 flex items-center justify-center transition-all duration-200 group"
+                      title="Chat on WhatsApp"
                     >
-                      Chat on WhatsApp &rarr;
+                      <WhatsAppIcon className="w-5 h-5 group-hover:scale-110 transition-transform duration-200" />
                     </a>
+                    <div>
+                      <h4 className="text-[11px] font-bold text-[#064E3B]/60 uppercase tracking-wider mb-0.5">WhatsApp Support</h4>
+                      <a
+                        href={whatsappLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-sm sm:text-base font-bold text-[#064E3B] hover:text-[#043C2D] underline underline-offset-2 inline-flex items-center gap-1.5 font-sans group"
+                      >
+                        <span>Chat on WhatsApp</span>
+                        <span className="group-hover:translate-x-0.5 transition-transform duration-200">&rarr;</span>
+                      </a>
+                    </div>
                   </div>
                 </div>
               </div>
 
-              <div className="p-4 rounded-xl bg-amber-950/40 border border-amber-500/30 text-amber-200 text-xs leading-relaxed">
-                <p className="font-semibold text-amber-300 mb-1 flex items-center gap-1.5">
-                  <AlertCircle className="w-4 h-4" /> Security Notice
+              {/* Security Notice */}
+              <div className="mt-8 pt-5 border-t border-[#064E3B]/10 text-xs text-[#064E3B]/75 leading-relaxed font-sans">
+                <p className="font-semibold text-[#064E3B] mb-1 flex items-center gap-1.5 uppercase tracking-wider text-[11px]">
+                  <AlertCircle className="w-3.5 h-3.5 text-[#064E3B]" /> Security Notice
                 </p>
                 Aidessa support will never ask for your private keys or seed phrase. All official support messages route to support@veritasaid.com.
               </div>
             </div>
           </div>
 
-          {/* Interactive Form Card */}
-          <div className="lg:col-span-8">
-            <div className="bg-slate-900/80 border border-slate-800 rounded-2xl p-6 sm:p-8 shadow-xl backdrop-blur-sm">
+          {/* Interactive Form Card (Right) */}
+          <div className="lg:col-span-8 flex flex-col">
+            <div className="flex-1 flex flex-col justify-between rounded-[8px] sm:rounded-[10px] bg-[#FFFDF9] border border-[#064E3B]/15 p-6 sm:p-8 text-[#064E3B] shadow-[0_12px_40px_rgba(6,78,59,0.08)]">
               {submitted ? (
-                <div className="py-12 text-center space-y-4">
-                  <div className="w-16 h-16 bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 rounded-full flex items-center justify-center mx-auto">
-                    <CheckCircle2 className="w-8 h-8" />
+                <div className="py-12 text-center space-y-4 my-auto">
+                  <div className="w-16 h-16 bg-[#064E3B]/[0.08] text-[#064E3B] border border-[#064E3B]/20 rounded-full flex items-center justify-center mx-auto">
+                    <CheckCircle2 className="w-8 h-8 text-[#064E3B]" />
                   </div>
-                  <h3 className="text-2xl font-bold text-white">Message Sent Successfully!</h3>
-                  <p className="text-slate-300 text-sm max-w-md mx-auto">
-                    Your inquiry has been routed directly to <span className="font-semibold text-cyan-300">support@veritasaid.com</span>. Our support team will review and reply to your email shortly.
+                  <h3 className="font-editorial text-2xl sm:text-3xl font-normal text-[#064E3B]">Message Sent Successfully!</h3>
+                  <p className="text-[#064E3B]/75 text-sm max-w-md mx-auto font-sans leading-relaxed">
+                    Your inquiry has been routed directly to <span className="font-semibold text-[#064E3B]">support@veritasaid.com</span>. Our support team will review and reply to your email shortly.
                   </p>
                   <button
                     onClick={() => setSubmitted(false)}
-                    className="mt-4 px-6 py-2.5 bg-slate-800 hover:bg-slate-700 text-white font-bold text-sm rounded-xl transition-colors"
+                    className="mt-4 px-6 py-2.5 bg-[#064E3B] hover:bg-[#043C2D] text-[#F8E7C9] font-semibold text-sm rounded-[8px] transition-colors cursor-pointer"
                   >
                     Send Another Message
                   </button>
                 </div>
               ) : (
-                <form onSubmit={handleSubmit} className="space-y-6">
-                  <div className="flex items-center justify-between pb-4 border-b border-slate-800">
-                    <h3 className="text-xl font-bold text-white">Send Us a Direct Message</h3>
-                    <span className="text-xs text-slate-400 font-medium">Routes to support@veritasaid.com</span>
-                  </div>
+                <form onSubmit={handleSubmit} className="space-y-5 flex-1 flex flex-col justify-between">
+                  <div>
+                    {/* Aligned Header Line */}
+                    <div className="pb-4 border-b border-[#064E3B]/10 min-h-[44px]">
+                      <h3 className="font-editorial text-2xl sm:text-3xl font-normal text-[#064E3B]">
+                        Send Us a Direct Message
+                      </h3>
+                    </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                    <div>
-                      <label className="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2">
-                        Your Name *
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 pt-6">
+                      <div>
+                        <label className="block text-xs sm:text-sm font-semibold text-[#064E3B] mb-1.5">
+                          Your Name *
+                        </label>
+                        <input
+                          type="text"
+                          required
+                          placeholder="John Doe"
+                          value={form.name}
+                          onChange={(e) => setForm({ ...form, name: e.target.value })}
+                          className="w-full px-4 py-2.5 sm:py-3 bg-white border border-[#064E3B]/20 rounded-[8px] text-sm text-[#064E3B] placeholder-[#064E3B]/35 focus:outline-none focus:ring-2 focus:ring-[#064E3B]/25 focus:border-[#064E3B] transition-all"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-xs sm:text-sm font-semibold text-[#064E3B] mb-1.5">
+                          Your Email Address *
+                        </label>
+                        <input
+                          type="email"
+                          required
+                          placeholder="john@example.com"
+                          value={form.email}
+                          onChange={(e) => setForm({ ...form, email: e.target.value })}
+                          className="w-full px-4 py-2.5 sm:py-3 bg-white border border-[#064E3B]/20 rounded-[8px] text-sm text-[#064E3B] placeholder-[#064E3B]/35 focus:outline-none focus:ring-2 focus:ring-[#064E3B]/25 focus:border-[#064E3B] transition-all"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="mt-5">
+                      <label className="block text-xs sm:text-sm font-semibold text-[#064E3B] mb-1.5">
+                        Subject (Optional)
                       </label>
                       <input
                         type="text"
-                        required
-                        placeholder="John Doe"
-                        value={form.name}
-                        onChange={(e) => setForm({ ...form, name: e.target.value })}
-                        className="w-full px-4 py-3 bg-slate-950 border border-slate-800 rounded-xl outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 text-sm font-medium text-white transition-all"
+                        placeholder="Inquiry about refund claim / case status"
+                        value={form.subject}
+                        onChange={(e) => setForm({ ...form, subject: e.target.value })}
+                        className="w-full px-4 py-2.5 sm:py-3 bg-white border border-[#064E3B]/20 rounded-[8px] text-sm text-[#064E3B] placeholder-[#064E3B]/35 focus:outline-none focus:ring-2 focus:ring-[#064E3B]/25 focus:border-[#064E3B] transition-all"
                       />
                     </div>
 
-                    <div>
-                      <label className="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2">
-                        Your Email Address *
+                    <div className="mt-5">
+                      <label className="block text-xs sm:text-sm font-semibold text-[#064E3B] mb-1.5">
+                        Your Message *
                       </label>
-                      <input
-                        type="email"
+                      <textarea
+                        rows={5}
                         required
-                        placeholder="john@example.com"
-                        value={form.email}
-                        onChange={(e) => setForm({ ...form, email: e.target.value })}
-                        className="w-full px-4 py-3 bg-slate-950 border border-slate-800 rounded-xl outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 text-sm font-medium text-white transition-all"
+                        placeholder="Type your message or inquiry here..."
+                        value={form.message}
+                        onChange={(e) => setForm({ ...form, message: e.target.value })}
+                        className="w-full px-4 py-3 bg-white border border-[#064E3B]/20 rounded-[8px] text-sm text-[#064E3B] placeholder-[#064E3B]/35 focus:outline-none focus:ring-2 focus:ring-[#064E3B]/25 focus:border-[#064E3B] transition-all resize-y"
                       />
                     </div>
                   </div>
 
-                  <div>
-                    <label className="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2">
-                      Subject (Optional)
-                    </label>
-                    <input
-                      type="text"
-                      placeholder="Inquiry about refund claim / case status"
-                      value={form.subject}
-                      onChange={(e) => setForm({ ...form, subject: e.target.value })}
-                      className="w-full px-4 py-3 bg-slate-950 border border-slate-800 rounded-xl outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 text-sm font-medium text-white transition-all"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2">
-                      Your Message *
-                    </label>
-                    <textarea
-                      rows={5}
-                      required
-                      placeholder="Type your message or inquiry here..."
-                      value={form.message}
-                      onChange={(e) => setForm({ ...form, message: e.target.value })}
-                      className="w-full px-4 py-3 bg-slate-950 border border-slate-800 rounded-xl outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 text-sm font-medium text-white transition-all"
-                    />
-                  </div>
-
-                  <div className="pt-2">
-                    <motion.button
+                  <div className="pt-4">
+                    <button
                       type="submit"
                       disabled={loading}
-                      whileHover={{ scale: 1.01 }}
-                      whileTap={{ scale: 0.99 }}
-                      className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-xl bg-gradient-to-r from-[#085464] to-[#06b6d4] text-white font-bold text-sm shadow-lg shadow-cyan-950/40 hover:brightness-110 transition-all disabled:opacity-50 cursor-pointer"
+                      className="inline-flex items-center justify-center gap-2 px-6 sm:px-7 py-2.5 sm:py-3 rounded-[8px] bg-[#064E3B] text-[#F8E7C9] font-semibold text-sm sm:text-base hover:bg-[#043C2D] border border-[#043C2D] shadow-md shadow-[#064E3B]/20 active:scale-95 transition-all disabled:opacity-50 cursor-pointer"
                     >
                       <Send className="w-4 h-4" />
-                      {loading ? 'Sending Message...' : 'Send Message to support@veritasaid.com'}
-                    </motion.button>
+                      <span>{loading ? 'Sending...' : 'Send Message'}</span>
+                    </button>
                   </div>
                 </form>
               )}

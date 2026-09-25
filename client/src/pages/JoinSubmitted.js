@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { Check, User, ArrowRight } from 'lucide-react';
 
 const JoinSubmitted = () => {
   const navigate = useNavigate();
@@ -12,43 +12,48 @@ const JoinSubmitted = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#041d24] via-[#085464] to-[#041d24] flex items-center justify-center p-4">
-      <motion.div
-        initial={{ opacity: 0, y: 16 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-        className="rounded-2xl bg-slate-900/80 backdrop-blur-lg border border-emerald-500/30 p-10 text-white max-w-md w-full text-center shadow-2xl"
-      >
-        {/* Success icon */}
-        <div className="flex items-center justify-center mb-6">
-          <div className="w-16 h-16 rounded-full bg-emerald-500/20 border-2 border-emerald-400 flex items-center justify-center shadow-lg shadow-emerald-500/20">
-            <svg className="w-8 h-8 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
-            </svg>
-          </div>
+    <div className="max-w-xl mx-auto rounded-[8px] sm:rounded-[10px] bg-[#FFFDF9] border border-[#064E3B]/15 p-7 sm:p-10 md:p-12 text-[#064E3B] shadow-[0_12px_40px_rgba(6,78,59,0.08)] text-center">
+      {/* Success Icon */}
+      <div className="flex items-center justify-center mb-6">
+        <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-[#064E3B]/[0.08] border-2 border-[#064E3B]/20 flex items-center justify-center text-[#064E3B] shadow-sm">
+          <Check className="w-8 h-8 sm:w-10 sm:h-10 text-[#064E3B]" strokeWidth={2.5} />
         </div>
+      </div>
 
-        <h1 className="text-2xl md:text-3xl font-bold mb-3 text-white">Claim Submitted!</h1>
-        <p className="text-emerald-100/80 text-sm mb-8">Your claim will be verified within <span className="text-emerald-400 font-bold">48 hours</span>. Create your account now to track your status.</p>
+      {/* Status Label */}
+      <p className="text-[11px] sm:text-xs font-bold tracking-[0.2em] text-[#064E3B]/70 uppercase mb-2">
+        Application Received
+      </p>
 
-        {/* Pulsing glow ring */}
-        <div className="relative inline-block w-full">
-          <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 blur-lg opacity-50 animate-pulse" />
-          <motion.button
-            onClick={handleCreateAccount}
-            whileHover={{ scale: 1.03 }}
-            whileTap={{ scale: 0.97 }}
-            className="relative w-full bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-white px-8 py-4 rounded-xl font-bold text-lg shadow-xl border border-emerald-400/30 flex items-center justify-center gap-3 transition-all"
-          >
-            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-            </svg>
-            Create Your Account →
-          </motion.button>
-        </div>
+      <h1 className="font-editorial text-3xl sm:text-4xl md:text-[42px] font-normal text-[#064E3B] tracking-[-0.02em] leading-tight mb-3">
+        Claim Submitted!
+      </h1>
 
-        <p className="text-emerald-200/50 text-xs mt-4">Free to join · Track your claim status · Earn points</p>
-      </motion.div>
+      <p className="text-sm sm:text-base text-[#064E3B]/80 font-sans max-w-md mx-auto mb-8 leading-relaxed">
+        Your claim will be verified within <span className="font-bold text-[#064E3B]">48 hours</span>. Create your account now to track your status.
+      </p>
+
+      {/* Action Button matching Home Page primary style */}
+      <div className="flex justify-center">
+        <button
+          type="button"
+          onClick={handleCreateAccount}
+          className="inline-flex items-center justify-center gap-2 px-6 sm:px-7 py-2.5 sm:py-3 rounded-[8px] bg-[#064E3B] text-[#F8E7C9] text-sm sm:text-base font-semibold hover:bg-[#043C2D] border border-[#043C2D] shadow-md shadow-[#064E3B]/20 active:scale-95 transition-all duration-200 group cursor-pointer"
+        >
+          <User className="w-4 h-4 text-[#F8E7C9]" strokeWidth={2} />
+          <span>Create Your Account</span>
+          <ArrowRight className="w-4 h-4 text-[#F8E7C9] transition-transform group-hover:translate-x-1" strokeWidth={2} />
+        </button>
+      </div>
+
+      {/* Trust points */}
+      <div className="mt-8 pt-5 border-t border-[#064E3B]/10 flex flex-wrap items-center justify-center gap-2 sm:gap-3 text-xs sm:text-sm text-[#064E3B]/70 font-sans">
+        <span>Free to join</span>
+        <span className="inline-block w-1 h-1 rounded-full bg-[#064E3B]/30" />
+        <span>Track your claim status</span>
+        <span className="inline-block w-1 h-1 rounded-full bg-[#064E3B]/30" />
+        <span>Earn points</span>
+      </div>
     </div>
   );
 };

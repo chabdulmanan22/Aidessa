@@ -1,14 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { MapPin, ArrowRight } from 'lucide-react';
 import { getJoinWizard, setJoinWizard } from '../utils/datastore';
-import axios from 'axios';
-import toast from 'react-hot-toast';
 
 const JoinContact = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [initialized, setInitialized] = useState(false);
 
   const [form, setForm] = useState({
     email: '',
@@ -22,17 +19,13 @@ const JoinContact = () => {
     postalCode: '',
   });
 
-  // Contact form state
-  const [contactMsg, setContactMsg] = useState({ name: '', email: '', message: '' });
-  const [sendingMsg, setSendingMsg] = useState(false);
-
   useEffect(() => {
     const wiz = getJoinWizard();
     const d = wiz.details || {};
     const c = wiz.contact || {};
     setForm({
       email: c.email || d.email || '',
-      countryCode: c.countryCode || '',
+      countryCode: c.countryCode || '+1',
       phone: c.phone || '',
       telegramUsername: c.telegramUsername || '',
       address1: c.address1 || '',
@@ -41,7 +34,6 @@ const JoinContact = () => {
       stateProvince: c.stateProvince || '',
       postalCode: c.postalCode || '',
     });
-    setInitialized(true);
   }, []);
 
   const requiredFilled =
@@ -67,173 +59,177 @@ const JoinContact = () => {
     navigate(nextUrl);
   };
 
-  const handleContactMsgChange = (e) => {
-    const { name, value } = e.target;
-    setContactMsg((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleSendMessage = async (e) => {
-    e.preventDefault();
-    if (!contactMsg.name || !contactMsg.email || !contactMsg.message) {
-      toast.error('Please fill in all fields.');
-      return;
-    }
-    setSendingMsg(true);
-    try {
-      await axios.post('/api/mail', {
-        to: 'support@veritasaid.com',
-        subject: `Contact Form Message from ${contactMsg.name}`,
-        text: `Name: ${contactMsg.name}\nEmail: ${contactMsg.email}\n\nMessage:\n${contactMsg.message}`,
-      });
-      toast.success('Message sent! We will get back to you soon.');
-      setContactMsg({ name: '', email: '', message: '' });
-    } catch (err) {
-      toast.error(err?.response?.data?.message || 'Failed to send message. Please try again.');
-    } finally {
-      setSendingMsg(false);
-    }
+  const handleBack = () => {
+    const params = new URLSearchParams(location.search);
+    const ref = params.get('ref');
+    const backUrl = ref ? `/join-details?ref=${encodeURIComponent(ref)}` : '/join-details';
+    navigate(backUrl);
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#085464] via-[#05323c] to-[#02141a]">
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-12">
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="rounded-2xl bg-[#031d24]/80 backdrop-blur-lg border border-cyan-500/20 p-8 text-white shadow-2xl shadow-cyan-950/60"
+    <div className="rounded-[8px] sm:rounded-[10px] bg-[#FFFDF9] border border-[#064E3B]/15 p-6 sm:p-10 md:p-12 text-[#064E3B] shadow-[0_12px_40px_rgba(6,78,59,0.08)]">
+      {/* Card Header matching Home Page icon & editorial typography */}
+      <div className="flex items-center gap-3.5 sm:gap-4 mb-6 sm:mb-8 pb-5 border-b border-[#064E3B]/10">
+        <div className="flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-[8px] bg-[#064E3B]/[0.08] text-[#064E3B] border border-[#064E3B]/15 shrink-0">
+          <MapPin className="w-6 h-6 sm:w-7 sm:h-7 text-[#064E3B]" strokeWidth={1.8} />
+        </div>
+        <div>
+          <div className="flex items-center gap-2 mb-1">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#064E3B]" />
+            <span className="text-[10px] sm:text-xs font-bold tracking-[0.2em] text-[#064E3B] uppercase">
+              Step 2 of 3 • Contact & Address
+            </span>
+          </div>
+          <h1 className="font-editorial text-2xl sm:text-3xl md:text-4xl font-normal text-[#064E3B] tracking-[-0.02em] leading-tight">
+            Contact & Address
+          </h1>
+        </div>
+      </div>
+
+      {/* Form Fields matching Home Page styling */}
+      <div className="space-y-5 sm:space-y-6">
+        <div>
+          <label className="block font-sans text-xs sm:text-sm font-semibold text-[#064E3B] mb-1.5">
+            Email Address
+          </label>
+          <input
+            type="email"
+            name="email"
+            value={form.email}
+            onChange={handleChange}
+            placeholder="you@example.com"
+            className="w-full px-4 py-2.5 sm:py-3 rounded-[8px] bg-white border border-[#064E3B]/20 text-[#064E3B] placeholder-[#064E3B]/35 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-[#064E3B]/25 focus:border-[#064E3B] transition-all duration-200"
+          />
+        </div>
+
+        <div>
+          <label className="block font-sans text-xs sm:text-sm font-semibold text-[#064E3B] mb-1.5">
+            Phone Number
+          </label>
+          <div className="grid grid-cols-3 gap-3">
+            <input
+              type="text"
+              name="countryCode"
+              value={form.countryCode}
+              onChange={handleChange}
+              placeholder="+1"
+              className="col-span-1 px-4 py-2.5 sm:py-3 rounded-[8px] bg-white border border-[#064E3B]/20 text-[#064E3B] placeholder-[#064E3B]/35 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-[#064E3B]/25 focus:border-[#064E3B] transition-all duration-200"
+            />
+            <input
+              type="tel"
+              name="phone"
+              value={form.phone}
+              onChange={handleChange}
+              placeholder="555-123-4567"
+              className="col-span-2 px-4 py-2.5 sm:py-3 rounded-[8px] bg-white border border-[#064E3B]/20 text-[#064E3B] placeholder-[#064E3B]/35 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-[#064E3B]/25 focus:border-[#064E3B] transition-all duration-200"
+            />
+          </div>
+        </div>
+
+        <div>
+          <label className="block font-sans text-xs sm:text-sm font-semibold text-[#064E3B] mb-1.5">
+            Telegram Username (Optional)
+          </label>
+          <input
+            type="text"
+            name="telegramUsername"
+            value={form.telegramUsername}
+            onChange={handleChange}
+            placeholder="@yourusername"
+            className="w-full px-4 py-2.5 sm:py-3 rounded-[8px] bg-white border border-[#064E3B]/20 text-[#064E3B] placeholder-[#064E3B]/35 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-[#064E3B]/25 focus:border-[#064E3B] transition-all duration-200"
+          />
+        </div>
+
+        <div>
+          <label className="block font-sans text-xs sm:text-sm font-semibold text-[#064E3B] mb-1.5">
+            Street Address
+          </label>
+          <input
+            type="text"
+            name="address1"
+            value={form.address1}
+            onChange={handleChange}
+            placeholder="123 Main St"
+            className="w-full px-4 py-2.5 sm:py-3 rounded-[8px] bg-white border border-[#064E3B]/20 text-[#064E3B] placeholder-[#064E3B]/35 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-[#064E3B]/25 focus:border-[#064E3B] transition-all duration-200"
+          />
+        </div>
+
+        <div>
+          <label className="block font-sans text-xs sm:text-sm font-semibold text-[#064E3B] mb-1.5">
+            Street Address Line 2 (Optional)
+          </label>
+          <input
+            type="text"
+            name="address2"
+            value={form.address2}
+            onChange={handleChange}
+            placeholder="Apt, suite, unit, building, floor, etc."
+            className="w-full px-4 py-2.5 sm:py-3 rounded-[8px] bg-white border border-[#064E3B]/20 text-[#064E3B] placeholder-[#064E3B]/35 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-[#064E3B]/25 focus:border-[#064E3B] transition-all duration-200"
+          />
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+          <div>
+            <label className="block font-sans text-xs sm:text-sm font-semibold text-[#064E3B] mb-1.5">
+              City
+            </label>
+            <input
+              type="text"
+              name="city"
+              value={form.city}
+              onChange={handleChange}
+              placeholder="e.g. San Francisco"
+              className="w-full px-4 py-2.5 sm:py-3 rounded-[8px] bg-white border border-[#064E3B]/20 text-[#064E3B] placeholder-[#064E3B]/35 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-[#064E3B]/25 focus:border-[#064E3B] transition-all duration-200"
+            />
+          </div>
+          <div>
+            <label className="block font-sans text-xs sm:text-sm font-semibold text-[#064E3B] mb-1.5">
+              Province / State
+            </label>
+            <input
+              type="text"
+              name="stateProvince"
+              value={form.stateProvince}
+              onChange={handleChange}
+              placeholder="e.g. CA"
+              className="w-full px-4 py-2.5 sm:py-3 rounded-[8px] bg-white border border-[#064E3B]/20 text-[#064E3B] placeholder-[#064E3B]/35 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-[#064E3B]/25 focus:border-[#064E3B] transition-all duration-200"
+            />
+          </div>
+        </div>
+
+        <div>
+          <label className="block font-sans text-xs sm:text-sm font-semibold text-[#064E3B] mb-1.5">
+            Postal / ZIP Code
+          </label>
+          <input
+            type="text"
+            name="postalCode"
+            value={form.postalCode}
+            onChange={handleChange}
+            placeholder="e.g. 94103"
+            className="w-full px-4 py-2.5 sm:py-3 rounded-[8px] bg-white border border-[#064E3B]/20 text-[#064E3B] placeholder-[#064E3B]/35 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-[#064E3B]/25 focus:border-[#064E3B] transition-all duration-200"
+          />
+        </div>
+      </div>
+
+      {/* Action Buttons matching Home Page Button Style */}
+      <div className="mt-8 sm:mt-10 pt-5 border-t border-[#064E3B]/10 flex items-center justify-between gap-4">
+        <button
+          type="button"
+          onClick={handleBack}
+          className="inline-flex items-center justify-center px-6 py-2.5 sm:py-3 rounded-[8px] border border-[#064E3B]/25 text-[#064E3B] text-sm sm:text-base font-semibold hover:bg-[#064E3B]/[0.06] hover:border-[#064E3B]/40 active:scale-95 transition-all duration-200 cursor-pointer"
         >
-          <h1 className="text-2xl md:text-3xl font-bold mb-6">Contact & Address</h1>
-
-
-          <div className="space-y-5">
-            <div>
-              <label className="block text-sm text-white/80 mb-1">Email Address</label>
-              <input
-                type="email"
-                name="email"
-                value={form.email}
-                onChange={handleChange}
-                className="w-full px-4 py-2.5 rounded-lg bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-teal-400"
-                placeholder="you@example.com"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm text-white/80 mb-1">Phone Number</label>
-              <div className="grid grid-cols-3 gap-3">
-                <input
-                  type="text"
-                  name="countryCode"
-                  value={form.countryCode}
-                  onChange={handleChange}
-                  className="col-span-1 px-4 py-2.5 rounded-lg bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-teal-400"
-                  placeholder="+1"
-                />
-                <input
-                  type="tel"
-                  name="phone"
-                  value={form.phone}
-                  onChange={handleChange}
-                  className="col-span-2 px-4 py-2.5 rounded-lg bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-teal-400"
-                  placeholder="555-123-4567"
-                />
-              </div>
-            </div>
-
-            <div>
-              <label className="block text-sm text-white/80 mb-1">Telegram Username</label>
-              <input
-                type="text"
-                name="telegramUsername"
-                value={form.telegramUsername}
-                onChange={handleChange}
-                className="w-full px-4 py-2.5 rounded-lg bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-teal-400"
-                placeholder="@yourusername"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm text-white/80 mb-1">Street Address</label>
-              <input
-                type="text"
-                name="address1"
-                value={form.address1}
-                onChange={handleChange}
-                className="w-full px-4 py-2.5 rounded-lg bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-teal-400"
-                placeholder="123 Main St"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm text-white/80 mb-1">Street Address Line 2 (Optional)</label>
-              <input
-                type="text"
-                name="address2"
-                value={form.address2}
-                onChange={handleChange}
-                className="w-full px-4 py-2.5 rounded-lg bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-teal-400"
-                placeholder="Apt, suite, unit, building, floor, etc."
-              />
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-              <div>
-                <label className="block text-sm text-white/80 mb-1">City</label>
-                <input
-                  type="text"
-                  name="city"
-                  value={form.city}
-                  onChange={handleChange}
-                  className="w-full px-4 py-2.5 rounded-lg bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-teal-400"
-                  placeholder="San Francisco"
-                />
-              </div>
-              <div>
-                <label className="block text-sm text-white/80 mb-1">Province / State</label>
-                <input
-                  type="text"
-                  name="stateProvince"
-                  value={form.stateProvince}
-                  onChange={handleChange}
-                  className="w-full px-4 py-2.5 rounded-lg bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-teal-400"
-                  placeholder="CA"
-                />
-              </div>
-            </div>
-
-            <div>
-              <label className="block text-sm text-white/80 mb-1">Postal / ZIP Code</label>
-              <input
-                type="text"
-                name="postalCode"
-                value={form.postalCode}
-                onChange={handleChange}
-                className="w-full px-4 py-2.5 rounded-lg bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-teal-400"
-                placeholder="94103"
-              />
-            </div>
-          </div>
-
-          <div className="mt-8 flex items-center justify-between">
-            <button
-              type="button"
-              onClick={() => navigate('/join-details')}
-              className="px-5 py-2.5 rounded-lg border border-white/30 text-white hover:bg-white/10 transition"
-            >
-              Back
-            </button>
-            <button
-              type="button"
-              onClick={handleNext}
-              disabled={!requiredFilled}
-              className={`px-6 py-2.5 rounded-lg font-semibold bg-gradient-to-r from-[#086a7e] to-[#0e7490] text-white shadow-md shadow-cyan-950/50 transition ${requiredFilled ? 'hover:from-[#097d95] hover:to-[#0891b2]' : 'opacity-50 cursor-not-allowed'
-                }`}
-            >
-              Next
-            </button>
-          </div>
-        </motion.div>
+          Back
+        </button>
+        <button
+          type="button"
+          onClick={handleNext}
+          disabled={!requiredFilled}
+          className="inline-flex items-center justify-center gap-2.5 px-7 sm:px-8 py-2.5 sm:py-3 rounded-[8px] bg-[#064E3B] text-[#F8E7C9] text-sm sm:text-base font-semibold hover:bg-[#043C2D] border border-[#043C2D] shadow-md shadow-[#064E3B]/20 active:scale-95 transition-all duration-200 group cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-[#064E3B]"
+        >
+          <span>Next</span>
+          <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" strokeWidth={2} />
+        </button>
       </div>
     </div>
   );
