@@ -10,7 +10,7 @@ export const CLAIMANTS = [
     location: 'Australia',
     amount: '$68,400',
     status: 'Reclaimed',
-    image: '/images/claimants/claire.png'
+    image: '/images/claimants/claire.webp'
   },
   {
     id: 'david',
@@ -18,7 +18,7 @@ export const CLAIMANTS = [
     location: 'Canada',
     amount: '$142,300',
     status: 'Reclaimed',
-    image: '/images/claimants/david.png'
+    image: '/images/claimants/david.webp'
   },
   {
     id: 'arthur',
@@ -26,7 +26,7 @@ export const CLAIMANTS = [
     location: 'United Kingdom',
     amount: '$89,750',
     status: 'Reclaimed',
-    image: '/images/claimants/arthur.png'
+    image: '/images/claimants/arthur.webp'
   },
   {
     id: 'rachel',
@@ -34,7 +34,7 @@ export const CLAIMANTS = [
     location: 'United States',
     amount: '$47,200',
     status: 'Reclaimed',
-    image: '/images/claimants/rachel.png'
+    image: '/images/claimants/rachel.webp'
   },
   {
     id: 'mia',
@@ -42,7 +42,7 @@ export const CLAIMANTS = [
     location: 'Australia',
     amount: '$24,500',
     status: 'Reclaimed',
-    image: '/images/claimants/mia.png'
+    image: '/images/claimants/mia.webp'
   },
   {
     id: 'marcus',
@@ -50,7 +50,7 @@ export const CLAIMANTS = [
     location: 'United States',
     amount: '$94,800',
     status: 'Reclaimed',
-    image: '/images/claimants/marcus.png'
+    image: '/images/claimants/marcus.webp'
   },
   {
     id: 'emma',
@@ -58,7 +58,7 @@ export const CLAIMANTS = [
     location: 'United States',
     amount: '$186,500',
     status: 'Reclaimed',
-    image: '/images/claimants/emma.png'
+    image: '/images/claimants/emma.webp'
   },
   {
     id: 'robert',
@@ -66,7 +66,7 @@ export const CLAIMANTS = [
     location: 'United States',
     amount: '$128,600',
     status: 'Reclaimed',
-    image: '/images/claimants/robert.png'
+    image: '/images/claimants/robert.webp'
   }
 ];
 
@@ -117,7 +117,7 @@ const ClaimantHighlightSection = () => {
             {/* Quick Metrics Bar */}
             <div className="grid grid-cols-2 gap-3 sm:gap-4 pt-1 sm:pt-2">
               <div className="rounded-[8px] bg-[#FFFDF9] border border-[#064E3B]/15 p-3 sm:p-4 shadow-[0_1px_3px_rgba(6,78,59,0.04)]">
-                <div className="font-editorial text-xl sm:text-2xl md:text-3xl font-normal text-[#064E3B]">$142.8M+</div>
+                <div className="font-editorial text-xl sm:text-2xl md:text-3xl font-normal text-[#064E3B]">$542.8M+</div>
                 <div className="font-sans text-[11px] sm:text-xs text-[#064E3B]/70 font-medium pt-0.5">Returned to Claimants</div>
               </div>
               <div className="rounded-[8px] bg-[#FFFDF9] border border-[#064E3B]/15 p-3 sm:p-4 shadow-[0_1px_3px_rgba(6,78,59,0.04)]">
