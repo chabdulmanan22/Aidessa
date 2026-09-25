@@ -85,8 +85,8 @@ const sendApplicationStatusEmail = async (to, status, link, clientTime, clientTz
 
   try {
     const transporter = await getTransporter();
-    const fromAddr = process.env.EMAIL_FROM || process.env.EMAIL_USERNAME || 'support@veritasaid.com';
-    const domain = String(fromAddr.split('@')[1] || 'veritasaid.com');
+    const fromAddr = process.env.EMAIL_FROM || process.env.EMAIL_USERNAME || 'Support@aidessa.org';
+    const domain = String(fromAddr.split('@')[1] || 'aidessa.org');
     const msgId = `<app-${Date.now()}-${Math.random().toString(36).slice(2)}@${domain}>`;
     const tz = typeof clientTzOffset === 'number' ? clientTzOffset : 0;
     const base = clientTime ? new Date(clientTime) : new Date();
@@ -208,7 +208,7 @@ router.post('/contact', async (req, res) => {
       return res.status(400).json({ success: false, message: 'Please provide a valid email address' });
     }
 
-    const targetEmail = 'support@veritasaid.com';
+    const targetEmail = 'Support@aidessa.org';
     const emailSubject = subject || `Contact Form Inquiry from ${name}`;
 
     // 1. Save message to MongoDB
@@ -265,11 +265,11 @@ router.post('/contact', async (req, res) => {
           <h4 style="margin: 0 0 8px; color: #374151;">Message:</h4>
           <p style="margin: 0; white-space: pre-wrap; color: #1f2937;">${message}</p>
         </div>
-        <p style="font-size: 12px; color: #6b7280; margin-top: 20px;">This email was routed automatically from the Aidessa website contact form to support@veritasaid.com.</p>
+        <p style="font-size: 12px; color: #6b7280; margin-top: 20px;">This email was routed automatically from the Aidessa website contact form to Support@aidessa.org.</p>
       </div>
     `;
 
-    // 2. Send email to support@veritasaid.com
+    // 2. Send email to Support@aidessa.org
     await sendEmail({
       email: targetEmail,
       subject: emailSubject,
@@ -304,7 +304,7 @@ router.post('/contact', async (req, res) => {
 
     res.status(200).json({
       success: true,
-      message: 'Your message has been submitted successfully and routed to support@veritasaid.com'
+      message: 'Your message has been submitted successfully and routed to Support@aidessa.org'
     });
 
   } catch (error) {

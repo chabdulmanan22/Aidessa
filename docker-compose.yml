@@ -24,14 +24,14 @@ services:
       NODE_ENV: production
       JWT_SECRET: ${JWT_SECRET:-your_jwt_secret_key}
       ADMIN_USERNAME: ${ADMIN_USERNAME:-admin}
-      ADMIN_EMAIL: ${ADMIN_EMAIL:-support@veritasaid.com}
+      ADMIN_EMAIL: ${ADMIN_EMAIL:-Support@aidessa.org}
       ADMIN_PASSWORD: ${ADMIN_PASSWORD:-your_admin_password}
       EMAIL_HOST: ${EMAIL_HOST:-smtp.hostinger.com}
       EMAIL_PORT: ${EMAIL_PORT:-465}
       EMAIL_SECURE: ${EMAIL_SECURE:-true}
-      EMAIL_USERNAME: ${EMAIL_USERNAME:-support@veritasaid.com}
+      EMAIL_USERNAME: ${EMAIL_USERNAME:-Support@aidessa.org}
       EMAIL_PASSWORD: ${EMAIL_PASSWORD:-your_smtp_password}
-      EMAIL_FROM: ${EMAIL_FROM:-support@veritasaid.com}
+      EMAIL_FROM: ${EMAIL_FROM:-Support@aidessa.org}
       CLIENT_URL: ${CLIENT_URL:-https://veritasaid.com}
     depends_on:
       - veritas-mongodb

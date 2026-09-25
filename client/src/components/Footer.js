@@ -172,10 +172,10 @@ const Footer = () => {
                 </li>
                 <li>
                   <a 
-                    href="mailto:support@veritasaid.com" 
+                    href="mailto:Support@aidessa.org" 
                     className="font-sans text-[#F8E7C9]/75 hover:text-white transition-colors duration-200 text-xs sm:text-sm block break-all"
                   >
-                    support@veritasaid.com
+                    Support@aidessa.org
                   </a>
                 </li>
                 <li className="pt-1">

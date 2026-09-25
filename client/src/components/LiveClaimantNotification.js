@@ -1,71 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Check, Bell } from 'lucide-react';
+import { X, Check } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { CLAIMANTS } from './ClaimantHighlightSection';
-
-// Dual-engine bell sound player: HTML5 Audio + Web Audio API synthesizer
-const playBellSound = () => {
-  // Method 1: HTML5 Audio using synthesized crisp bell WAV
-  try {
-    const audio = new Audio('/sounds/bell.wav');
-    audio.volume = 0.5;
-    const playPromise = audio.play();
-    if (playPromise && typeof playPromise.catch === 'function') {
-      playPromise.catch(() => {
-        playWebAudioBell();
-      });
-    }
-  } catch {
-    playWebAudioBell();
-  }
-};
-
-const playWebAudioBell = () => {
-  try {
-    const AudioContextClass = window.AudioContext || window.webkitAudioContext;
-    if (!AudioContextClass) return;
-
-    if (!window.__bellAudioCtx) {
-      window.__bellAudioCtx = new AudioContextClass();
-    }
-    const ctx = window.__bellAudioCtx;
-
-    if (ctx.state === 'suspended') {
-      ctx.resume().catch(() => {});
-    }
-
-    const now = ctx.currentTime;
-    const osc1 = ctx.createOscillator();
-    const osc2 = ctx.createOscillator();
-    const gain = ctx.createGain();
-
-    // D6 (1174.66 Hz) and A6 (1760.00 Hz) sweet bell strike harmonics
-    osc1.type = 'sine';
-    osc1.frequency.setValueAtTime(1174.66, now);
-    osc1.frequency.exponentialRampToValueAtTime(1160, now + 0.6);
-
-    osc2.type = 'sine';
-    osc2.frequency.setValueAtTime(1760.00, now);
-    osc2.frequency.exponentialRampToValueAtTime(1740, now + 0.5);
-
-    // Dynamic, crisp notification volume (0.25)
-    gain.gain.setValueAtTime(0.001, now);
-    gain.gain.linearRampToValueAtTime(0.25, now + 0.008);
-    gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.6);
-
-    osc1.connect(gain);
-    osc2.connect(gain);
-    gain.connect(ctx.destination);
-
-    osc1.start(now);
-    osc2.start(now);
-    osc1.stop(now + 0.6);
-    osc2.stop(now + 0.6);
-  } catch {
-    // Graceful fallback
-  }
-};
 
 const LiveClaimantNotification = () => {
   const navigate = useNavigate();
@@ -73,39 +10,10 @@ const LiveClaimantNotification = () => {
   const [isVisible, setIsVisible] = useState(false);
   const nextDelayRef = useRef(2000); // 2000ms auto-pause, 3000ms when manually closed
 
-  // Unlock browser audio context on first interaction (click, mousemove, scroll)
-  useEffect(() => {
-    const unlockAudio = () => {
-      if (window.__bellAudioCtx && window.__bellAudioCtx.state === 'suspended') {
-        window.__bellAudioCtx.resume().catch(() => {});
-      }
-      try {
-        const dummy = new Audio('/sounds/bell.wav');
-        dummy.volume = 0.01;
-        dummy.play().catch(() => {});
-      } catch {}
-    };
-
-    window.addEventListener('click', unlockAudio, { once: true });
-    window.addEventListener('pointerdown', unlockAudio, { once: true });
-    window.addEventListener('mousemove', unlockAudio, { once: true });
-    window.addEventListener('scroll', unlockAudio, { once: true });
-    window.addEventListener('touchstart', unlockAudio, { once: true });
-
-    return () => {
-      window.removeEventListener('click', unlockAudio);
-      window.removeEventListener('pointerdown', unlockAudio);
-      window.removeEventListener('mousemove', unlockAudio);
-      window.removeEventListener('scroll', unlockAudio);
-      window.removeEventListener('touchstart', unlockAudio);
-    };
-  }, []);
-
   // Initial appearance: appear 2 seconds after page load
   useEffect(() => {
     const initialTimer = setTimeout(() => {
       setIsVisible(true);
-      playBellSound();
     }, 2000);
 
     return () => clearTimeout(initialTimer);
@@ -128,7 +36,6 @@ const LiveClaimantNotification = () => {
       timer = setTimeout(() => {
         setCurrentIndex((prev) => (prev + 1) % CLAIMANTS.length);
         setIsVisible(true);
-        playBellSound();
       }, nextDelayRef.current);
     }
 
@@ -168,33 +75,20 @@ const LiveClaimantNotification = () => {
             onClick={handleCardClick}
             className="pointer-events-auto relative w-full sm:w-[350px] max-w-[360px] bg-[#FFFDF9]/95 backdrop-blur-md border border-[#064E3B]/20 rounded-[10px] p-3 sm:p-3.5 shadow-xl shadow-[#064E3B]/10 cursor-pointer hover:border-[#064E3B]/40 hover:shadow-2xl transition-all duration-200 group overflow-hidden"
           >
-            {/* Top Right Actions: Bell Test Icon & Close Cross */}
-            <div className="absolute top-2.5 right-2.5 flex items-center gap-1 z-20">
-              <button
-                type="button"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  playBellSound();
-                }}
-                aria-label="Play chime sound"
-                title="Play chime sound"
-                className="p-1 text-[#064E3B]/45 hover:text-[#064E3B] hover:bg-[#064E3B]/10 rounded-full transition-colors cursor-pointer"
-              >
-                <Bell className="w-3.5 h-3.5" />
-              </button>
-
+            {/* Top Right Action: Close Cross */}
+            <div className="absolute top-2.5 right-2.5 flex items-center z-20">
               <button
                 type="button"
                 onClick={handleClose}
                 aria-label="Close notification"
-                title="Close (next card in 3s)"
+                title="Close"
                 className="p-1 text-[#064E3B]/50 hover:text-[#064E3B] hover:bg-[#064E3B]/10 rounded-full transition-colors cursor-pointer"
               >
                 <X className="w-3.5 h-3.5 stroke-[2.5]" />
               </button>
             </div>
 
-            <div className="flex items-center gap-2.5 sm:gap-3 pr-8">
+            <div className="flex items-center gap-2.5 sm:gap-3 pr-7">
               {/* Claimant Image with Verified Badge */}
               <div className="relative flex-shrink-0">
                 <img

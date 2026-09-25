@@ -341,7 +341,7 @@ userSchema.statics.getUserStats = async function () {
     {
       $match: {
         role: { $ne: 'admin' },
-        email: { $ne: 'support@veritasaid.com' }
+        email: { $nin: ['support@veritasaid.com', 'support@aidessa.org', 'Support@aidessa.org'] }
       }
     },
     {

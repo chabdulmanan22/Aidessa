@@ -597,7 +597,7 @@ const UserProfileManagement = () => {
       const headers = token ? { Authorization: `Bearer ${token}` } : undefined;
       const res = await axios.get('/api/users', { params: { limit: 100, type: 'real' }, headers });
       const rawUsers = res.data?.data?.users || [];
-      const apiUsers = rawUsers.filter(u => u.role !== 'admin' && u.email !== 'support@veritasaid.com');
+      const apiUsers = rawUsers.filter(u => u.role !== 'admin' && u.email?.toLowerCase() !== 'support@aidessa.org' && u.email?.toLowerCase() !== 'support@veritasaid.com');
       if (apiUsers.length > 0) {
         const mapped = apiUsers.map((u) => {
           // Apply overrides to local display

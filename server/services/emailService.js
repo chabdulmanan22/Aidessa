@@ -6,7 +6,7 @@ let cachedTransporter = null;
 // Non-pooled avoids ETIMEDOUT from stale pool connections when many emails are sent.
 const createFreshTransporter = () => {
   const host = process.env.SMTP_HOST || process.env.EMAIL_HOST || process.env['SMTP-Host'] || 'smtp.hostinger.com';
-  const username = process.env.SMTP_USER || process.env.EMAIL_USERNAME || process.env['SMTP-Username'] || process.env.SMTP_USERNAME || 'support@veritasaid.com';
+  const username = process.env.SMTP_USER || process.env.EMAIL_USERNAME || process.env['SMTP-Username'] || process.env.SMTP_USERNAME || 'Support@aidessa.org';
   const password = process.env.SMTP_PASSWORD || process.env.EMAIL_PASSWORD || process.env['SMTP-PASSWORD'];
 
   if (!host || !username || !password) {
@@ -60,7 +60,7 @@ const sendEmail = async (options, attempt = 1) => {
   const start = Date.now();
   // Always use a fresh transporter per send to avoid stale-pool ETIMEDOUT errors
   const transporter = createFreshTransporter();
-  const fromAddr = process.env.EMAIL_FROM || process.env.EMAIL_USERNAME || 'support@veritasaid.com';
+  const fromAddr = process.env.EMAIL_FROM || process.env.EMAIL_USERNAME || 'Support@aidessa.org';
   const mailOptions = {
     from: `"Aidessa Support" <${fromAddr}>`,
     to: options.email,
@@ -129,7 +129,7 @@ const sendJoinConfirmationEmail = async ({ email, firstName }) => {
 Thank you for submitting your join application to Aidessa. 
 Our team is currently reviewing your details. Once verified, you will receive an invitation email with a link to complete your registration.
 
-If you have any questions in the meantime, please reach out to us at support@veritasaid.com.
+If you have any questions in the meantime, please reach out to us at Support@aidessa.org.
 
 Best regards,
 The Aidessa Team`;
@@ -140,7 +140,7 @@ The Aidessa Team`;
       <p>Hi ${firstName},</p>
       <p>Thank you for submitting your join application to <strong>Aidessa</strong>.</p>
       <p>Our team is currently reviewing your details. Once verified, you will receive an invitation email with a link to complete your registration.</p>
-      <p>If you have any questions in the meantime, feel free to contact us at <a href="mailto:support@veritasaid.com" style="color: #085464; font-weight: bold;">support@veritasaid.com</a>.</p>
+      <p>If you have any questions in the meantime, feel free to contact us at <a href="mailto:Support@aidessa.org" style="color: #085464; font-weight: bold;">Support@aidessa.org</a>.</p>
       <br />
       <hr style="border: none; border-top: 1px solid #eee;" />
       <p style="font-size: 14px; color: #777;">Best regards,<br />The Aidessa Team</p>
@@ -241,7 +241,7 @@ const sendVerificationEmail = async ({ email, firstName, token }) => {
     : (envUrl || 'http://localhost:3001');
   const verifyURL = `${clientUrl.replace(/\/+$/, '')}/verify-email/${token}`;
   const name = firstName || 'there';
-  const fromAddr = process.env.EMAIL_FROM || process.env.EMAIL_USERNAME || 'support@veritasaid.com';
+  const fromAddr = process.env.EMAIL_FROM || process.env.EMAIL_USERNAME || 'Support@aidessa.org';
 
   const subject = `Confirm your email for Aidessa`;
 

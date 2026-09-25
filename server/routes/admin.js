@@ -252,7 +252,7 @@ router.post('/login', [
       if (uMatch && pMatch) {
         isAuthenticated = true;
         adminUsername = envUsername || 'admin';
-        adminEmail = envEmail || 'support@veritasaid.com';
+        adminEmail = envEmail || 'Support@aidessa.org';
       }
     }
   }

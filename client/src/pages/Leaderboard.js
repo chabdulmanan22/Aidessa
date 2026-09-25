@@ -73,7 +73,7 @@ const Leaderboard = () => {
       const typeParam = category === 'contributions' ? 'contributions' : category;
       const res = await axios.get('/api/users/leaderboard', { params: { limit: 50, type: typeParam }, headers: token ? { Authorization: `Bearer ${token}` } : undefined });
       const rawList = res?.data?.data?.users || res?.data?.data?.leaderboard || [];
-      const apiList = rawList.filter(u => u.role !== 'admin' && u.email !== 'support@veritasaid.com');
+      const apiList = rawList.filter(u => u.role !== 'admin' && u.email?.toLowerCase() !== 'support@aidessa.org' && u.email?.toLowerCase() !== 'support@veritasaid.com');
       let data = apiList.map(u => ({
         _id: u._id || u.email,
         username: (u.email || '').split('@')[0],

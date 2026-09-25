@@ -69,7 +69,7 @@ const ContactUs = () => {
     try {
       const res = await axios.post('/api/mail/contact', form);
       if (res.data?.success) {
-        toast.success('Your message has been sent to support@veritasaid.com');
+        toast.success('Your message has been sent to Support@aidessa.org');
         setSubmitted(true);
         setForm({ name: '', email: '', subject: '', message: '' });
       } else {
@@ -121,10 +121,10 @@ const ContactUs = () => {
                     <div>
                       <h4 className="text-[11px] font-bold text-[#064E3B]/60 uppercase tracking-wider mb-0.5">Direct Email</h4>
                       <a
-                        href="mailto:support@veritasaid.com"
+                        href="mailto:Support@aidessa.org"
                         className="text-sm sm:text-base font-semibold text-[#064E3B] hover:underline underline-offset-2 break-all transition-colors font-sans"
                       >
-                        support@veritasaid.com
+                        Support@aidessa.org
                       </a>
                     </div>
                   </div>
@@ -182,11 +182,13 @@ const ContactUs = () => {
               </div>
 
               {/* Security Notice */}
-              <div className="mt-8 pt-5 border-t border-[#064E3B]/10 text-xs text-[#064E3B]/75 leading-relaxed font-sans">
-                <p className="font-semibold text-[#064E3B] mb-1 flex items-center gap-1.5 uppercase tracking-wider text-[11px]">
+              <div className="mt-8 pt-5 border-t border-[#064E3B]/10 text-xs font-sans">
+                <p className="font-semibold text-[#064E3B] mb-1.5 flex items-center gap-1.5 uppercase tracking-wider text-[11px]">
                   <AlertCircle className="w-3.5 h-3.5 text-[#064E3B]" /> Security Notice
                 </p>
-                Aidessa support will never ask for your private keys or seed phrase. All official support messages route to support@veritasaid.com.
+                <p className="font-bold text-[#064E3B] leading-relaxed">
+                  Aidessa support will never ask for your private keys or seed phrase.
+                </p>
               </div>
             </div>
           </div>
@@ -201,7 +203,7 @@ const ContactUs = () => {
                   </div>
                   <h3 className="font-editorial text-2xl sm:text-3xl font-normal text-[#064E3B]">Message Sent Successfully!</h3>
                   <p className="text-[#064E3B]/75 text-sm max-w-md mx-auto font-sans leading-relaxed">
-                    Your inquiry has been routed directly to <span className="font-semibold text-[#064E3B]">support@veritasaid.com</span>. Our support team will review and reply to your email shortly.
+                    Your inquiry has been routed directly to <span className="font-semibold text-[#064E3B]">Support@aidessa.org</span>. Our support team will review and reply to your email shortly.
                   </p>
                   <button
                     onClick={() => setSubmitted(false)}

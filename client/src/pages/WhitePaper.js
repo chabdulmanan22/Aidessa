@@ -292,8 +292,8 @@ const WhitePaper = () => {
           </ul>
           <p className="mb-2">Join us:</p>
           <ul style={{ listStyleType: 'disc', paddingLeft: '20px', lineHeight: '1.9' }}>
-            <li>Website <a href="https://veritasaid.com" style={{ color: '#2563eb' }}>veritasaid.com</a></li>
-            <li>Email <a href="mailto:support@veritasaid.com" style={{ color: '#2563eb' }}>support@veritasaid.com</a></li>
+            <li>Website <a href="https://aidessa.org" style={{ color: '#2563eb' }}>aidessa.org</a></li>
+            <li>Email <a href="mailto:Support@aidessa.org" style={{ color: '#2563eb' }}>Support@aidessa.org</a></li>
           </ul>
         </Section>
 

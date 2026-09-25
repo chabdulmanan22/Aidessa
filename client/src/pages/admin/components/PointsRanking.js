@@ -63,7 +63,7 @@ const PointsRanking = () => {
       ]);
 
       const rawList = leaderboardRes.data?.data?.leaderboard || leaderboardRes.data?.data?.users || [];
-      const list = rawList.filter(u => u.role !== 'admin' && u.email !== 'support@veritasaid.com');
+      const list = rawList.filter(u => u.role !== 'admin' && u.email?.toLowerCase() !== 'support@aidessa.org' && u.email?.toLowerCase() !== 'support@veritasaid.com');
       const globalStats = statsRes.data?.data?.stats || {
         totalUsers: 0,
         totalPoints: 0,

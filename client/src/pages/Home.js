@@ -72,8 +72,8 @@ const Home = () => {
                   Aidessa helps government agencies securely return cryptocurrency recovered from fraud, financial crimes, and illegal business practices to verified victims through on-chain Proof-of-Loss tokens (RFND).
                 </p>
 
-                {/* Primary Action Button - Bold & Magnetic */}
-                <div className="pt-1.5 sm:pt-2 flex flex-wrap items-center justify-center sm:justify-start gap-4">
+                {/* Action Buttons - Request Refund & Talk to Us */}
+                <div className="pt-1.5 sm:pt-2 flex flex-wrap items-center justify-center sm:justify-start gap-3.5 sm:gap-4">
                   <button
                     type="button"
                     onClick={() => {
@@ -85,11 +85,22 @@ const Home = () => {
                     <span>Request a refund</span>
                     <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" strokeWidth={2} />
                   </button>
+
+                  <button
+                    type="button"
+                    onClick={() => navigate('/contact')}
+                    className="inline-flex items-center gap-3 px-8 py-3.5 rounded-[8px] bg-[#FFFDF9] text-[#064E3B] text-[15px] sm:text-base font-semibold hover:bg-[#064E3B] hover:text-[#F8E7C9] border border-[#064E3B]/35 hover:border-[#064E3B] shadow-md shadow-[#064E3B]/10 active:scale-95 transition-all duration-200 group cursor-pointer"
+                  >
+                    <span>Talk to Us</span>
+                    <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" strokeWidth={2} />
+                  </button>
                 </div>
 
-                {/* Trust Badge / Sub-stat */}
-                <div className="text-xs sm:text-sm font-medium text-[#064E3B]/85 pt-1 leading-snug text-center sm:text-left">
-                  <span>A trusted nonprofit providing support and advocacy for victims of digital fraud.</span>
+                {/* Highlighted Trust Badge with Rectangular Border */}
+                <div className="pt-2.5 sm:pt-3 flex justify-center sm:justify-start">
+                  <div className="inline-flex items-center px-4 py-2.5 sm:px-4.5 sm:py-2.5 rounded-[6px] bg-[#064E3B]/[0.08] border border-[#064E3B]/30 shadow-sm text-xs sm:text-[13.5px] font-semibold text-[#064E3B] leading-snug text-center sm:text-left backdrop-blur-sm">
+                    <span>A trusted nonprofit providing support and advocacy for victims of digital fraud.</span>
+                  </div>
                 </div>
               </motion.div>
             </div>

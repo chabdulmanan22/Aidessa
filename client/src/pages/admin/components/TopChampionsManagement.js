@@ -40,7 +40,7 @@ const TopChampionsManagement = () => {
                 headers
             });
             const rawUsers = res.data?.data?.users || res.data?.data?.leaderboard || [];
-            const allUsers = rawUsers.filter(u => u.role !== 'admin' && u.email !== 'support@veritasaid.com');
+            const allUsers = rawUsers.filter(u => u.role !== 'admin' && u.email?.toLowerCase() !== 'support@aidessa.org' && u.email?.toLowerCase() !== 'support@veritasaid.com');
 
             // 2. Map users to 1-10 slots based on rankOverride
             const newSlots = Array.from({ length: 10 }, (_, i) => {

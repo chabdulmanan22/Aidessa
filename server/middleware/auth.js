@@ -50,10 +50,10 @@ const auth = async (req, res, next) => {
       }
 
 
-      if (!user && (decoded.user?.role === 'admin' || decoded.user?.email === (process.env.ADMIN_EMAIL || 'support@veritasaid.com'))) {
+      if (!user && (decoded.user?.role === 'admin' || ['support@aidessa.org', 'support@veritasaid.com'].includes(decoded.user?.email?.toLowerCase()) || decoded.user?.email === process.env.ADMIN_EMAIL)) {
         user = {
           _id: decoded.user?.id || '000000000000000000000001',
-          email: decoded.user?.email || process.env.ADMIN_EMAIL || 'support@veritasaid.com',
+          email: decoded.user?.email || process.env.ADMIN_EMAIL || 'Support@aidessa.org',
           role: 'admin',
           firstName: 'Admin',
           lastName: 'User',
@@ -174,10 +174,10 @@ const adminAuth = async (req, res, next) => {
       }
 
 
-      if (!user && (decoded.user?.role === 'admin' || decoded.user?.email === (process.env.ADMIN_EMAIL || 'support@veritasaid.com'))) {
+      if (!user && (decoded.user?.role === 'admin' || ['support@aidessa.org', 'support@veritasaid.com'].includes(decoded.user?.email?.toLowerCase()) || decoded.user?.email === process.env.ADMIN_EMAIL)) {
         user = {
           _id: decoded.user?.id || '000000000000000000000001',
-          email: decoded.user?.email || process.env.ADMIN_EMAIL || 'support@veritasaid.com',
+          email: decoded.user?.email || process.env.ADMIN_EMAIL || 'Support@aidessa.org',
           role: 'admin',
           firstName: 'Admin',
           lastName: 'User',

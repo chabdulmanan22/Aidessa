@@ -8,7 +8,7 @@ const Terms = () => {
         <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-2">Aidessa - Terms of Service</h1>
         <p className="text-sm text-gray-500 mb-8">Last Updated: November 2025</p>
         <div className="space-y-6 text-gray-800">
-          <p>Welcome to Aidessa ("we," "our," or "Aidessa"). By accessing or using veritasaid.com, our applications, smart contracts, portals, or any associated services (collectively, the "Services"), you agree to be bound by these Terms of Service ("Terms"). If you do not agree to these Terms, do not use our Services.</p>
+          <p>Welcome to Aidessa ("we," "our," or "Aidessa"). By accessing or using aidessa.org, our applications, smart contracts, portals, or any associated services (collectively, the "Services"), you agree to be bound by these Terms of Service ("Terms"). If you do not agree to these Terms, do not use our Services.</p>
           <h2 className="text-xl font-bold text-gray-900">1. Nature of the Platform</h2>
           <p>Aidessa is a decentralized asset recovery protocol designed to:</p>
           <ul className="list-disc pl-6 space-y-1">
@@ -57,8 +57,8 @@ const Terms = () => {
           <p>We may update these Terms at any time. Changes will be posted on this page with a new "Last Updated" date. Continued use of the Services means you accept the updated Terms.</p>
           <h2 className="text-xl font-bold text-gray-900">13. Contact</h2>
           <div className="space-y-2">
-            <div className="flex items-center gap-2 text-gray-900"><Mail className="w-5 h-5" /><span>support@veritasaid.com</span></div>
-            <div className="flex items-center gap-2 text-gray-900"><Send className="w-5 h-5" /><span>veritasaid.com</span></div>
+            <div className="flex items-center gap-2 text-gray-900"><Mail className="w-5 h-5" /><span>Support@aidessa.org</span></div>
+            <div className="flex items-center gap-2 text-gray-900"><Send className="w-5 h-5" /><span>aidessa.org</span></div>
           </div>
         </div>
       </div>

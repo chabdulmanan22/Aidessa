@@ -5,68 +5,68 @@ import { ArrowRight } from 'lucide-react';
 
 export const CLAIMANTS = [
   {
-    id: 'bernard',
-    name: 'Bernard',
-    location: 'Denver, CO',
-    amount: '$38,400',
+    id: 'claire',
+    name: 'Claire',
+    location: 'Australia',
+    amount: '$68,400',
     status: 'Reclaimed',
-    image: '/images/claimants/bernard.jpg'
+    image: '/images/claimants/claire.png'
   },
   {
-    id: 'mateo',
-    name: 'Mateo',
-    location: 'Phoenix, AZ',
-    amount: '$19,250',
+    id: 'david',
+    name: 'David',
+    location: 'Canada',
+    amount: '$142,300',
     status: 'Reclaimed',
-    image: '/images/claimants/mateo.jpg'
+    image: '/images/claimants/david.png'
   },
   {
-    id: 'stefan',
-    name: 'Stefan',
-    location: 'Frankfurt, DE',
-    amount: '$84,500',
+    id: 'arthur',
+    name: 'Arthur',
+    location: 'United Kingdom',
+    amount: '$89,750',
     status: 'Reclaimed',
-    image: '/images/claimants/stefan.jpg'
+    image: '/images/claimants/arthur.png'
   },
   {
-    id: 'kendra',
-    name: 'Kendra',
-    location: 'Houston, TX',
-    amount: '$14,800',
+    id: 'rachel',
+    name: 'Rachel',
+    location: 'United States',
+    amount: '$47,200',
     status: 'Reclaimed',
-    image: '/images/claimants/kendra.jpg'
+    image: '/images/claimants/rachel.png'
   },
   {
-    id: 'chloe',
-    name: 'Chloe',
-    location: 'San Diego, CA',
-    amount: '$7,200',
+    id: 'mia',
+    name: 'Mia',
+    location: 'Australia',
+    amount: '$24,500',
     status: 'Reclaimed',
-    image: '/images/claimants/chloe.jpg'
+    image: '/images/claimants/mia.png'
   },
   {
-    id: 'camila',
-    name: 'Camila',
-    location: 'Austin, TX',
-    amount: '$26,300',
+    id: 'marcus',
+    name: 'Marcus',
+    location: 'United States',
+    amount: '$94,800',
     status: 'Reclaimed',
-    image: '/images/claimants/camila.jpg'
+    image: '/images/claimants/marcus.png'
   },
   {
-    id: 'lucas',
-    name: 'Lucas',
-    location: 'Nashville, TN',
-    amount: '$11,900',
+    id: 'emma',
+    name: 'Emma',
+    location: 'United States',
+    amount: '$186,500',
     status: 'Reclaimed',
-    image: '/images/claimants/lucas.jpg'
+    image: '/images/claimants/emma.png'
   },
   {
-    id: 'elise',
-    name: 'Elise',
-    location: 'Miami, FL',
-    amount: '$53,750',
+    id: 'robert',
+    name: 'Robert',
+    location: 'United States',
+    amount: '$128,600',
     status: 'Reclaimed',
-    image: '/images/claimants/elise.jpg'
+    image: '/images/claimants/robert.png'
   }
 ];
 
@@ -117,7 +117,7 @@ const ClaimantHighlightSection = () => {
             {/* Quick Metrics Bar */}
             <div className="grid grid-cols-2 gap-3 sm:gap-4 pt-1 sm:pt-2">
               <div className="rounded-[8px] bg-[#FFFDF9] border border-[#064E3B]/15 p-3 sm:p-4 shadow-[0_1px_3px_rgba(6,78,59,0.04)]">
-                <div className="font-editorial text-xl sm:text-2xl md:text-3xl font-normal text-[#064E3B]">$42.8M+</div>
+                <div className="font-editorial text-xl sm:text-2xl md:text-3xl font-normal text-[#064E3B]">$142.8M+</div>
                 <div className="font-sans text-[11px] sm:text-xs text-[#064E3B]/70 font-medium pt-0.5">Returned to Claimants</div>
               </div>
               <div className="rounded-[8px] bg-[#FFFDF9] border border-[#064E3B]/15 p-3 sm:p-4 shadow-[0_1px_3px_rgba(6,78,59,0.04)]">

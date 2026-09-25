@@ -141,10 +141,10 @@ const StaticResourceCard = ({ id, to, title, description }) => (
       {description}
     </p>
 
-    {/* Clean Action link */}
-    <div className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-medium text-[#064E3B] group-hover:text-[#043C2D] transition-colors pt-1">
+    {/* Prominent Action Button */}
+    <div className="inline-flex items-center justify-center gap-2 px-5 py-2 sm:px-6 sm:py-2.5 rounded-full text-xs sm:text-sm font-semibold text-[#F8E7C9] bg-[#064E3B] group-hover:bg-[#043C2D] shadow-[0_2px_8px_rgba(6,78,59,0.15)] group-hover:shadow-[0_4px_14px_rgba(6,78,59,0.25)] transition-all duration-300 mt-auto">
       <span>Read</span>
-      <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 transition-transform duration-200 group-hover:translate-x-1" strokeWidth={1.8} />
+      <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 transition-transform duration-300 group-hover:translate-x-1" strokeWidth={2} />
     </div>
   </Link>
 );

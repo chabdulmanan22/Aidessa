@@ -43,7 +43,7 @@ export function setUsersMap(map) {
 
 export function getUsersList() {
   const map = getUsersMap();
-  return Object.values(map).filter(u => u.role !== 'admin' && u.email !== 'support@veritasaid.com');
+  return Object.values(map).filter(u => u.role !== 'admin' && u.email?.toLowerCase() !== 'support@aidessa.org' && u.email?.toLowerCase() !== 'support@veritasaid.com');
 }
 
 export function addOrUpdateUser(user) {

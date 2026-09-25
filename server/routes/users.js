@@ -251,7 +251,7 @@ router.get('/', adminAuth, [
     if (!users || users.length === 0) {
       let localUsers = readCollection('users');
       if (!role || role !== 'admin') {
-        localUsers = localUsers.filter((u) => u.role !== 'admin' && u.email !== 'support@veritasaid.com');
+        localUsers = localUsers.filter((u) => u.role !== 'admin' && u.email?.toLowerCase() !== 'support@aidessa.org' && u.email?.toLowerCase() !== 'support@veritasaid.com');
       }
       if (type === 'virtual') {
         localUsers = localUsers.filter((u) => u.isVirtual === true);
@@ -365,7 +365,7 @@ async function getUnifiedRankedUsers() {
       allUsers = await User.find({
         isActive: true,
         role: { $ne: 'admin' },
-        email: { $ne: 'support@veritasaid.com' }
+        email: { $nin: ['Support@aidessa.org', 'support@aidessa.org', 'support@veritasaid.com'] }
       }).lean();
     } catch (dbErr) {
       console.warn('getUnifiedRankedUsers DB find error:', dbErr.message);
@@ -374,7 +374,7 @@ async function getUnifiedRankedUsers() {
 
   const localList = readCollection('users') || [];
   localList.forEach(lu => {
-    if (lu.isActive !== false && lu.role !== 'admin' && lu.email !== 'support@veritasaid.com') {
+    if (lu.isActive !== false && lu.role !== 'admin' && lu.email?.toLowerCase() !== 'support@aidessa.org' && lu.email?.toLowerCase() !== 'support@veritasaid.com') {
       const exists = allUsers.some(u =>
         String(u._id || u.id) === String(lu._id || lu.id) ||
         (u.email && lu.email && u.email.toLowerCase() === lu.email.toLowerCase())
@@ -612,7 +612,7 @@ router.get('/stats', adminAuth, async (req, res) => {
 
     if (!stats || (!stats.realUsers && !stats.virtualUsers && !stats.totalUsers)) {
       const rawUsers = readCollection('users') || [];
-      const localUsers = rawUsers.filter((u) => u.role !== 'admin' && u.email !== 'support@veritasaid.com');
+      const localUsers = rawUsers.filter((u) => u.role !== 'admin' && u.email?.toLowerCase() !== 'support@aidessa.org' && u.email?.toLowerCase() !== 'support@veritasaid.com');
       const active = localUsers.filter((u) => u.isActive !== false);
       const real = localUsers.filter((u) => !u.isVirtual);
       const virtual = localUsers.filter((u) => !!u.isVirtual);
@@ -644,7 +644,7 @@ router.get('/stats', adminAuth, async (req, res) => {
   } catch (error) {
     console.error('Get user stats error:', error);
     const rawUsers = readCollection('users') || [];
-    const localUsers = rawUsers.filter((u) => u.role !== 'admin' && u.email !== 'support@veritasaid.com');
+    const localUsers = rawUsers.filter((u) => u.role !== 'admin' && u.email?.toLowerCase() !== 'support@aidessa.org' && u.email?.toLowerCase() !== 'support@veritasaid.com');
     const real = localUsers.filter((u) => !u.isVirtual);
     const virtual = localUsers.filter((u) => !!u.isVirtual);
     const points = localUsers.reduce((sum, u) => sum + (Number(u.points) || 0), 0);
