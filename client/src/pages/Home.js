@@ -8,64 +8,7 @@ import ClaimantHighlightSection from '../components/ClaimantHighlightSection';
 import LiveClaimantNotification from '../components/LiveClaimantNotification';
 import { STATIC_FEATURED_RESOURCES } from '../data/staticFeaturedResources';
 
-const SecureDistributionIcon = () => (
-  <svg
-    className="w-7 h-7 transition-transform duration-300 group-hover:scale-105"
-    viewBox="0 0 32 32"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-  >
-    <rect x="5" y="8" width="22" height="18" rx="3.5" fill="currentColor" fillOpacity="0.08" />
-    <rect x="5" y="8" width="22" height="18" rx="3.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-    <circle cx="16" cy="17" r="4.2" stroke="currentColor" strokeWidth="1.8" />
-    <path d="M16 19.5V17" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-    <path d="M10 8V6.5C10 4.5 12.7 3 16 3C19.3 3 22 4.5 22 6.5V8" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-  </svg>
-);
 
-const RecoveryStatsIcon = () => (
-  <svg
-    className="w-7 h-7 transition-transform duration-300 group-hover:scale-105"
-    viewBox="0 0 32 32"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-  >
-    <rect x="4.5" y="5" width="23" height="22" rx="3.5" fill="currentColor" fillOpacity="0.08" />
-    <rect x="4.5" y="5" width="23" height="22" rx="3.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-    <path d="M9.5 21V15" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-    <path d="M14 21V10.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-    <path d="M18.5 21V16.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-    <path d="M22.5 21V13" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-  </svg>
-);
-
-const ProgramTrackerIcon = () => (
-  <svg
-    className="w-7 h-7 transition-transform duration-300 group-hover:scale-105"
-    viewBox="0 0 32 32"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-  >
-    <circle cx="16" cy="16" r="12" fill="currentColor" fillOpacity="0.08" />
-    <circle cx="16" cy="16" r="12" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-    <path d="M9 19.5L13.5 15L17.5 19L23 11.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-    <polyline points="18.5 11.5 23 11.5 23 16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-  </svg>
-);
-
-const TransparentVotingIcon = () => (
-  <svg
-    className="w-7 h-7 transition-transform duration-300 group-hover:scale-105"
-    viewBox="0 0 32 32"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-  >
-    <rect x="5.5" y="7" width="21" height="20" rx="3.5" fill="currentColor" fillOpacity="0.08" />
-    <rect x="5.5" y="7" width="21" height="20" rx="3.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-    <path d="M11 5V9M21 5V9" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
-    <polyline points="10.5 17 14.5 21 21.5 13.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-  </svg>
-);
 
 const Home = () => {
   const navigate = useNavigate();
@@ -89,32 +32,7 @@ const Home = () => {
     } catch {}
   }, [location.search]);
 
-  const features = [
-    {
-      id: 'secure-dist',
-      icon: SecureDistributionIcon,
-      title: 'Secure Distribution',
-      description: 'Help ensure recovered funds are securely distributed to verified victims through a transparent, structured recovery process.'
-    },
-    {
-      id: 'recovery-stats',
-      icon: RecoveryStatsIcon,
-      title: 'Victim & Recovery Stats',
-      description: 'View key statistics on verified victims, recovered funds, and active refund programs.'
-    },
-    {
-      id: 'program-tracker',
-      icon: ProgramTrackerIcon,
-      title: 'Recovery Program Tracker',
-      description: 'Track active refund programs, recovery milestones, and the distribution of recovered funds.'
-    },
-    {
-      id: 'transparent-voting',
-      icon: TransparentVotingIcon,
-      title: 'Transparent Voting',
-      description: 'Participate in transparent voting to provide feedback on recovery campaigns and fund distribution, helping improve future efforts and promote accountability, with voting results displayed in real time.'
-    }
-  ];
+
 
   return (
     <div className="min-h-screen">
@@ -231,60 +149,7 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Features Section - How Aidessa Helps */}
-      <section className="w-full pt-12 pb-16 sm:pt-16 sm:pb-20 bg-[#FDF7EB] border-b border-[#EED5AF]">
-        <div className="w-full mobile-padding">
-          <div className="text-center mb-8 sm:mb-12">
-            <motion.h2
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              className="font-editorial text-3xl sm:text-4xl md:text-5xl font-normal text-[#064E3B] tracking-[-0.02em] mb-2 sm:mb-3 leading-[1.15] sm:leading-[1.1]"
-            >
-              How Aidessa Helps
-            </motion.h2>
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              className="font-sans text-sm sm:text-base md:text-lg text-[#064E3B]/85 max-w-2xl mx-auto leading-relaxed"
-            >
-              Verify eligible victims, issue on-chain Proof-of-Loss tokens, and facilitate the secure distribution of recovered funds.
-            </motion.p>
-          </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 justify-items-stretch max-w-7xl mx-auto">
-            {features.map((feature, index) => {
-              const Icon = feature.icon;
-              return (
-                <motion.div
-                  key={feature.id || index}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: '-24px' }}
-                  transition={{ duration: 0.6, delay: index * 0.1 }}
-                  className="group flex h-full min-h-[240px] sm:min-h-[280px] w-full flex-col items-center p-5 sm:p-7 text-center justify-between rounded-[8px] bg-[#FFFDF9] border border-[#064E3B]/15 hover:border-[#064E3B]/45 hover:bg-white transition-all duration-300 shadow-[0_1px_3px_rgba(6,78,59,0.04)] hover:shadow-[0_8px_24px_rgba(6,78,59,0.08)] cursor-pointer"
-                >
-                  {/* Refined bespoke icon container matching upper section */}
-                  <div className="mb-4 sm:mb-5 flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-[8px] bg-[#064E3B]/[0.06] text-[#064E3B] border border-[#064E3B]/12 group-hover:bg-[#064E3B] group-hover:text-[#F8E7C9] group-hover:border-[#064E3B] transition-all duration-300">
-                    <Icon />
-                  </div>
-
-                  {/* Editorial Serif Headline matching upper cards */}
-                  <h3 className="font-editorial text-xl sm:text-2xl lg:text-[1.55rem] font-normal text-[#064E3B] group-hover:text-[#043C2D] leading-[1.2] mb-2 sm:mb-3 transition-colors">
-                    {feature.title}
-                  </h3>
-
-                  {/* Clean Body Typography matching upper cards */}
-                  <p className="font-sans text-xs sm:text-[13.5px] md:text-sm text-[#064E3B]/80 leading-[1.6] sm:leading-[1.65] font-normal flex-1">
-                    {feature.description}
-                  </p>
-                </motion.div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
 
       {/* Claimant Highlight / Verified Recoveries Section (matching Screenshots 1, 2, and 3) */}
       <ClaimantHighlightSection />
